@@ -35,7 +35,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ user }) => {
       </div>
       <div className="absolute inset-0 z-[1] pointer-events-auto">
         <div className="h-full w-full lg:translate-x-[14vw]">
-          <DitherVeil src="/images/chrome-head.jpg" pattern="floyd" pixelSize={2} inkColor="#09131E" paperColor="#F2EAD7" rimColor="#42E4D0" rim={0.1} revealRadius={0} softness={0.6} linger={0} contrast={1.15} clickBurst={false} fit="contain" className="h-full w-full" />
+          <DitherVeil src="/images/chrome-head.jpg" pattern="floyd" pixelSize={2} inkColor="#09131E" paperColor="#F2EAD7" rimColor="#42E4D0" rim={0.1} revealRadius={200} softness={0.6} linger={1} contrast={1.15} clickBurst={true} fit="contain" className="h-full w-full" />
         </div>
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-[#06111D] via-[#06111D]/85 to-transparent lg:w-[62vw]" />
       </div>
