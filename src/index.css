@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --night: #06111D;
-  --indigo: #0B2633;
-  --plum: #103B46;
-  --lilac: #42E4D0;
-  --rose: #579AFF;
-  --peach: #F48691;
-  --aqua: #68C6B7;
-  --moon: #F6F3E9;
-  --mist: #B7D6D3;
-  --ok: #F3C96B;
-  --danger: #FF5C5C;
-  --electric: #347AF2;
-  --coral: #F48691;
-  --gold: #F3C96B;
-  --surface: #0B2633;
-  --surface-card: rgba(16, 59, 70, 0.58);
-  --obsura-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='25' viewBox='0 0 30 34'%3E%3Cpath d='M3 2 3 26 9 20 14 31 18 29 13 18 23 18Z' fill='%2306111D' stroke='%23347AF2' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M3 2 3 26 9 20 14 31 18 29 13 18 23 18Z' fill='%2306111D' stroke='%23F6F3E9' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 2 2, auto;
+  --night: #28201C;
+  --indigo: #273469;
+  --plum: #087E8B;
+  --lilac: #F4A900;
+  --rose: #D81B60;
+  --peach: #E34234;
+  --aqua: #477A45;
+  --moon: #FFF5E6;
+  --mist: #E3D0BE;
+  --ok: #FFD65A;
+  --danger: #E34234;
+  --electric: #273469;
+  --coral: #E34234;
+  --gold: #FFD65A;
+  --surface: #273469;
+  --surface-card: rgba(39, 52, 105, 0.68);
 }
 
 @layer base {
@@ -25,8 +24,8 @@
     font-family: 'Manrope', system-ui, -apple-system, sans-serif;
     background-color: var(--night);
     background-image:
-      radial-gradient(ellipse at 16% 18%, rgba(23, 133, 156, 0.18), transparent 36rem),
-      radial-gradient(ellipse at 84% 76%, rgba(77, 102, 190, 0.14), transparent 38rem);
+      radial-gradient(ellipse at 16% 18%, rgba(227, 66, 52, 0.13), transparent 36rem),
+      radial-gradient(ellipse at 84% 76%, rgba(8, 126, 139, 0.15), transparent 38rem);
     color: var(--moon);
     margin: 0;
     padding: 0;
@@ -35,22 +34,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  body,
-  button,
-  a,
-  [role="button"],
-  label,
-  summary,
-  select,
-  input[type="checkbox"],
-  input[type="radio"],
-  canvas {
-    cursor: var(--obsura-cursor) !important;
-  }
 
-  [class~="cursor-pointer"] {
-    cursor: var(--obsura-cursor) !important;
-  }
 
   button:disabled,
   [aria-disabled="true"] {
@@ -99,34 +83,34 @@
 }
 .nebula-wash-a {
   left: -24vw; top: -27vh;
-  background: radial-gradient(ellipse at 44% 47%, rgba(39, 220, 200, .68), rgba(13, 107, 148, .42) 35%, rgba(16, 59, 70, 0) 72%);
+  background: radial-gradient(ellipse at 44% 47%, rgba(39, 220, 200, .68), rgba(13, 107, 148, .42) 35%, rgba(40, 32, 28, 0) 72%);
   animation: nebulaDriftA 58s ease-in-out infinite;
 }
 .nebula-wash-b {
   right: -28vw; top: 17vh;
   width: min(70vw, 920px);
-  background: radial-gradient(ellipse at 45% 46%, rgba(58, 125, 255, .54), rgba(94, 76, 175, .32) 38%, rgba(16, 59, 70, 0) 72%);
+  background: radial-gradient(ellipse at 45% 46%, rgba(8, 126, 139, .48), rgba(39, 52, 105, .28) 38%, rgba(40, 32, 28, 0) 72%);
   animation: nebulaDriftB 72s ease-in-out infinite;
 }
 .nebula-wash-c {
   left: 20vw; bottom: -62vh;
   width: min(62vw, 800px);
-  background: radial-gradient(ellipse at 48% 42%, rgba(255, 130, 129, .42), rgba(231, 169, 96, .22) 34%, rgba(16, 59, 70, 0) 73%);
+  background: radial-gradient(ellipse at 48% 42%, rgba(227, 66, 52, .36), rgba(244, 169, 0, .2) 34%, rgba(40, 32, 28, 0) 73%);
   animation: nebulaDriftC 64s ease-in-out infinite;
 }
 .nebula-wash-d {
   left: 34vw; top: -37vh; width: min(48vw, 650px);
-  background: radial-gradient(ellipse at 48% 48%, rgba(255, 103, 145, .45), rgba(210, 74, 133, .24) 38%, rgba(16, 59, 70, 0) 73%);
+  background: radial-gradient(ellipse at 48% 48%, rgba(216, 27, 96, .4), rgba(227, 66, 52, .2) 38%, rgba(40, 32, 28, 0) 73%);
   animation: nebulaDriftD 68s ease-in-out infinite;
 }
 .nebula-wash-e {
   left: -20vw; bottom: -44vh; width: min(56vw, 740px);
-  background: radial-gradient(ellipse at 48% 48%, rgba(255, 183, 107, .38), rgba(243, 201, 107, .2) 36%, rgba(16, 59, 70, 0) 73%);
+  background: radial-gradient(ellipse at 48% 48%, rgba(244, 169, 0, .34), rgba(255, 214, 90, .18) 36%, rgba(40, 32, 28, 0) 73%);
   animation: nebulaDriftB 78s ease-in-out infinite reverse;
 }
 .nebula-wash-f {
   right: 4vw; bottom: -52vh; width: min(54vw, 700px);
-  background: radial-gradient(ellipse at 48% 48%, rgba(46, 231, 218, .4), rgba(52, 122, 242, .22) 38%, rgba(16, 59, 70, 0) 73%);
+  background: radial-gradient(ellipse at 48% 48%, rgba(8, 126, 139, .36), rgba(39, 52, 105, .22) 38%, rgba(40, 32, 28, 0) 73%);
   animation: nebulaDriftA 82s ease-in-out infinite reverse;
 }
 .nebula-stars {
@@ -238,20 +222,112 @@
 .art-drift-three { animation: art-drift-three 21s ease-in-out infinite; }
 .art-drift-four { animation: art-drift-four 25s ease-in-out infinite; }
 .art-drift-five { animation: art-drift-five 22s ease-in-out infinite; }
-.obsura-click-spark {
+.artopia-click-spark {
   position: fixed;
   z-index: 99999;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--spark-color, #42E4D0);
+  border: 1px solid var(--spark-color, #F4A900);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%) scale(.35);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--spark-color, #42E4D0) 22%, transparent), 0 0 22px color-mix(in srgb, var(--spark-color, #42E4D0) 48%, transparent);
-  animation: obsuraClickSpark 480ms cubic-bezier(.16,.74,.36,1) forwards;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--spark-color, #F4A900) 22%, transparent), 0 0 22px color-mix(in srgb, var(--spark-color, #F4A900) 48%, transparent);
+  animation: artopiaClickSpark 480ms cubic-bezier(.16,.74,.36,1) forwards;
 }
-@keyframes obsuraClickSpark {
+@keyframes artopiaClickSpark {
   0% { opacity: .9; transform: translate(-50%, -50%) scale(.35); }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(3.8); }
 }
 @media (prefers-reduced-motion: reduce) { .art-drift-one, .art-drift-two, .art-drift-three, .art-drift-four, .art-drift-five { animation: none !important; } }
+
+/* ARTOPIA identity: Indian pigment colours, paper-like surfaces, editorial motion. */
+:root {
+  --night: #28201C;
+  --indigo: #273469;
+  --plum: #087E8B;
+  --lilac: #F4A900;
+  --rose: #D81B60;
+  --peach: #E34234;
+  --aqua: #477A45;
+  --moon: #FFF5E6;
+  --mist: #E3D0BE;
+  --ok: #FFD65A;
+  --danger: #E34234;
+  --electric: #273469;
+  --coral: #E34234;
+  --gold: #FFD65A;
+  --surface: #273469;
+  --surface-card: rgba(39, 52, 105, .68);
+}
+
+.artopia-home { background: #28201C; }
+.artopia-hero { isolation: isolate; background: radial-gradient(ellipse at 76% 43%, rgba(8,126,139,.18), transparent 44%), #28201C; }
+.artopia-pigment-cloud { position:absolute; width:min(58vw,760px); aspect-ratio:1; border-radius: 42% 58% 62% 38% / 48% 42% 58% 52%; filter: blur(80px); opacity:.35; animation: artopia-cloud 34s ease-in-out infinite alternate; }
+.artopia-cloud-a { left:-16vw; top:8%; background:radial-gradient(ellipse at center,rgba(244,169,0,.5),rgba(227,66,52,.24) 42%,transparent 72%); }
+.artopia-cloud-b { right:-12vw; bottom:-20%; background:radial-gradient(ellipse at center,rgba(8,126,139,.55),rgba(216,27,96,.22) 47%,transparent 73%); animation-delay:-13s; }
+.artopia-jaali-wash { position:absolute; inset:0; opacity:.12; background-image: radial-gradient(circle at center,rgba(255,245,230,.7) 1px,transparent 1.5px); background-size:22px 22px; mask-image:linear-gradient(100deg,transparent 8%,black 48%,transparent 90%); }
+@keyframes artopia-cloud { to { transform:translate3d(4vw,-3vh,0) rotate(12deg) scale(1.06); } }
+.artopia-nav-link { position:relative; display:inline-flex; align-items:center; padding:.65rem .85rem; border-radius:999px; color:rgba(255,245,230,.78); font-size:.78rem; transition:color .2s ease, background .2s ease, transform .2s ease; }
+.artopia-nav-link::after { position:absolute; content:""; height:2px; left:.85rem; right:.85rem; bottom:.36rem; background:#FFD65A; transform:scaleX(0); transform-origin:left; transition:transform .22s ease; }
+.artopia-nav-link:hover { color:#FFF5E6; background:rgba(255,245,230,.07); }
+.artopia-nav-link:hover::after { transform:scaleX(1); }
+.artopia-nav-cta,.artopia-button { display:inline-flex; align-items:center; justify-content:center; gap:.7rem; border-radius:999px; font-weight:700; transition:transform .2s ease, box-shadow .22s ease, background-color .22s ease, color .22s ease; }
+.artopia-nav-cta { padding:.68rem 1rem; background:#FFD65A; color:#28201C; font-size:.76rem; }
+.artopia-nav-cta:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(244,169,0,.25); background:#F4A900; }
+.artopia-mobile-nav { position:absolute; top:calc(100% - .25rem); right:1.25rem; left:1.25rem; display:flex; flex-direction:column; align-items:stretch; padding:.75rem; border:1px solid rgba(255,245,230,.16); border-radius:1.25rem; background:rgba(40,32,28,.97); box-shadow:0 18px 55px rgba(0,0,0,.34); backdrop-filter:blur(18px); }
+.artopia-mobile-nav .artopia-nav-link,.artopia-mobile-nav .artopia-nav-cta { justify-content:flex-start; padding:.85rem 1rem; }
+.artopia-mobile-nav .artopia-nav-link::after { display:none; }
+.artopia-icon-button { display:grid; width:2.75rem; height:2.75rem; place-items:center; border:1px solid rgba(255,245,230,.22); border-radius:50%; color:#FFF5E6; background:rgba(39,52,105,.55); transition:transform .2s ease,color .2s ease,border-color .2s ease; }
+.artopia-icon-button:hover { transform:rotate(6deg) scale(1.04); color:#FFD65A; border-color:#FFD65A; }
+.artopia-eyebrow { display:flex; align-items:center; gap:.65rem; color:#FFD65A; font-family:'Space Mono',monospace; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.17em; }
+.artopia-eyebrow-dot { width:.5rem; height:.5rem; border-radius:50%; background:#E34234; box-shadow:0 0 0 4px rgba(227,66,52,.16); }
+.artopia-title { font-family:'Cormorant Garamond','Georgia',serif; font-size:clamp(3.5rem,8.4vw,7.8rem); font-weight:600; line-height:.89; letter-spacing:-.055em; text-wrap:balance; animation: artopia-rise .8s cubic-bezier(.2,.8,.2,1) both; }
+.artopia-title span { display:block; color:transparent; background:linear-gradient(100deg,#FFD65A 4%,#E34234 49%,#D81B60 86%); background-clip:text; -webkit-background-clip:text; }
+@keyframes artopia-rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+.artopia-button { min-height:3.35rem; padding:.9rem 1.35rem; font-size:.9rem; }
+.artopia-button:hover { transform:translateY(-3px) scale(1.025); }
+.artopia-button:active { transform:scale(.98); }
+.artopia-button:focus-visible,.artopia-icon-button:focus-visible,.artopia-category:focus-visible,.artopia-art-card:focus-visible { outline:3px solid #FFD65A; outline-offset:4px; }
+.artopia-button-primary { color:#28201C; background:#FFD65A; box-shadow:0 7px 24px rgba(244,169,0,.16); }
+.artopia-button-primary:hover { background:#F4A900; box-shadow:0 12px 34px rgba(244,169,0,.3); }
+.artopia-button-outline { color:#FFF5E6; border:1px solid rgba(255,245,230,.32); background:rgba(39,52,105,.42); }
+.artopia-button-outline:hover { border-color:#E34234; background:rgba(216,27,96,.16); box-shadow:0 10px 28px rgba(216,27,96,.17); }
+.artopia-hero-frame { padding:.65rem .65rem .85rem; border:1px solid rgba(255,245,230,.5); background:#FFF5E6; box-shadow:0 24px 80px rgba(0,0,0,.34),12px 14px 0 rgba(244,169,0,.35); }
+.artopia-hero-frame img { display:block; }
+.artopia-frame-caption { display:block; padding:.7rem .25rem .05rem; color:#28201C; font-family:'Space Mono',monospace; font-size:.56rem; letter-spacing:.08em; text-transform:uppercase; }
+.artopia-seal { display:flex; align-items:center; gap:.55rem; padding:.8rem 1rem; border:1px solid rgba(255,245,230,.28); border-radius:999px; color:#FFD65A; background:rgba(39,52,105,.78); font-family:'Space Mono',monospace; font-size:.6rem; line-height:1.35; text-transform:uppercase; letter-spacing:.08em; transform:rotate(-8deg); }
+.artopia-sunburst { width:76px; aspect-ratio:1; border-radius:50%; background:repeating-conic-gradient(from 0deg,#F4A900 0deg 5deg,transparent 5deg 15deg); mask:radial-gradient(circle,transparent 0 22%,#000 24% 45%,transparent 47%); opacity:.84; animation:artopia-spin 42s linear infinite; }
+@keyframes artopia-spin { to { transform:rotate(1turn); } }
+.artopia-section-title { font-family:'Cormorant Garamond','Georgia',serif; font-size:clamp(2.6rem,5vw,4.6rem); line-height:.95; letter-spacing:-.04em; }
+.artopia-section-title em { color:#FFD65A; }
+.artopia-text-link { display:inline-flex; align-items:center; gap:.55rem; color:#FFD65A; font-size:.85rem; font-weight:700; transition:gap .2s ease,color .2s ease; }
+.artopia-text-link:hover { gap:.85rem; color:#FFF5E6; }
+.artopia-category { position:relative; display:flex; min-height:320px; flex-direction:column; justify-content:space-between; overflow:hidden; padding:1.5rem; border:1px solid rgba(255,245,230,.16); border-radius:1.6rem; isolation:isolate; transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease; }
+.artopia-category::before { position:absolute; z-index:-1; content:""; inset:0; opacity:.94; transition:transform .5s ease; }
+.artopia-category:hover { transform:translateY(-7px) rotate(-.4deg); border-color:rgba(255,245,230,.42); box-shadow:0 20px 50px rgba(0,0,0,.25); }
+.artopia-category:hover::before { transform:scale(1.07); }
+.artopia-category-paintings::before { background:radial-gradient(ellipse at 95% 15%,rgba(255,214,90,.6),transparent 40%),linear-gradient(135deg,#273469,#087E8B 65%,#477A45); }
+.artopia-category-murals::before { background:radial-gradient(ellipse at 96% 16%,rgba(255,214,90,.46),transparent 37%),linear-gradient(135deg,#D81B60,#E34234 60%,#F4A900); }
+.artopia-category-pottery::before { background:radial-gradient(ellipse at 95% 12%,rgba(255,214,90,.52),transparent 41%),linear-gradient(135deg,#477A45,#087E8B 70%,#273469); }
+.artopia-category-kicker { font-family:'Space Mono',monospace; font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:#FFF5E6; }
+.artopia-category-title { position:relative; z-index:1; max-width:15ch; font-family:'Cormorant Garamond','Georgia',serif; font-size:clamp(2.1rem,3.2vw,3.3rem); line-height:.98; text-wrap:balance; }
+.artopia-category-action { display:inline-flex; align-items:center; gap:.6rem; width:max-content; border-bottom:1px solid rgba(255,245,230,.58); padding-bottom:.25rem; font-size:.78rem; font-weight:700; }
+.artopia-category-orbit { position:absolute; right:-30px; top:50px; width:180px; height:180px; border:1px solid rgba(255,245,230,.34); border-radius:50%; box-shadow:0 0 0 22px rgba(255,245,230,.08),0 0 0 48px rgba(255,245,230,.05); }
+.artopia-category-arch { position:absolute; right:22px; bottom:32px; width:82px; height:145px; border:1px solid rgba(255,245,230,.65); border-bottom:0; border-radius:50px 50px 0 0; transform:rotate(12deg); }
+.artopia-category-vessel { position:absolute; right:28px; bottom:27px; width:100px; height:115px; border:1px solid rgba(255,245,230,.6); border-radius:35% 35% 45% 45% / 12% 12% 26% 26%; transform:rotate(-9deg); }
+.artopia-category-vessel::before { content:""; position:absolute; width:42px; height:18px; left:28px; top:-10px; border:1px solid rgba(255,245,230,.65); border-radius:50%; background:rgba(39,52,105,.3); }
+.artopia-featured { background:linear-gradient(180deg,rgba(39,52,105,.36),rgba(40,32,28,.1)); }
+.artopia-art-card { display:block; min-width:0; border-radius:1.35rem; color:#FFF5E6; transition:transform .3s ease; }
+.artopia-art-card:hover { transform:translateY(-6px); }
+.artopia-art-image { position:relative; overflow:hidden; border:1px solid rgba(255,245,230,.2); border-radius:1.35rem; background:#273469; }
+.artopia-art-image img { display:block; width:100%; aspect-ratio:4/5; object-fit:cover; transition:transform .6s cubic-bezier(.2,.8,.2,1),filter .4s ease; }
+.artopia-art-card:hover img { transform:scale(1.045); filter:saturate(1.08); }
+.artopia-art-view { position:absolute; right:.8rem; bottom:.8rem; display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .72rem; border-radius:999px; color:#28201C; background:#FFD65A; font-size:.7rem; font-weight:700; opacity:0; transform:translateY(6px); transition:opacity .22s ease,transform .22s ease; }
+.artopia-art-card:hover .artopia-art-view,.artopia-art-card:focus-visible .artopia-art-view { opacity:1; transform:translateY(0); }
+.artopia-art-card h3 { font-family:'Cormorant Garamond','Georgia',serif; font-size:1.35rem; line-height:1.05; }
+.artopia-art-card p { margin-top:.35rem; color:rgba(255,245,230,.62); font-size:.75rem; }
+.artopia-price { color:#FFD65A; font-family:'Space Mono',monospace; font-size:.74rem; white-space:nowrap; }
+@media (max-width: 767px) { .artopia-title { font-size:clamp(3.4rem,15vw,5.5rem); } .artopia-category { min-height:260px; } }
+@media (prefers-reduced-motion: reduce) { .artopia-pigment-cloud,.artopia-title,.artopia-sunburst { animation:none !important; } .artopia-art-card,.artopia-category,.artopia-button { transition:none !important; } }
+
+@media (min-width:768px) { .artopia-mobile-nav { position:static; flex-direction:row; align-items:center; gap:.25rem; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; backdrop-filter:none; } }

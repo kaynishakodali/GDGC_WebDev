@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" fill="none">
+  <defs>
+    <radialGradient id="field" cx="0" cy="0" r="1" gradientTransform="matrix(920 700 -660 870 600 520)" gradientUnits="userSpaceOnUse"><stop stop-color="#29335D"/><stop offset=".48" stop-color="#141A2B"/><stop offset="1" stop-color="#28201C"/></radialGradient>
+    <linearGradient id="ribbonA" x1="120" y1="930" x2="1020" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#087E8B"/><stop offset=".35" stop-color="#38C6B2"/><stop offset=".7" stop-color="#F4A900"/><stop offset="1" stop-color="#E34234"/></linearGradient>
+    <linearGradient id="ribbonB" x1="260" y1="260" x2="1000" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#D81B60"/><stop offset=".48" stop-color="#E34234"/><stop offset="1" stop-color="#FFD65A"/></linearGradient>
+    <linearGradient id="ribbonC" x1="200" y1="1000" x2="960" y2="170" gradientUnits="userSpaceOnUse"><stop stop-color="#273469"/><stop offset=".5" stop-color="#087E8B"/><stop offset="1" stop-color="#F8B6A6"/></linearGradient>
+    <filter id="blur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="38"/></filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="10"/></filter>
+    <pattern id="grain" width="90" height="90" patternUnits="userSpaceOnUse"><circle cx="13" cy="14" r="1" fill="#FFF5E6" opacity=".4"/><circle cx="65" cy="50" r=".8" fill="#FFF5E6" opacity=".28"/><circle cx="36" cy="76" r=".7" fill="#FFF5E6" opacity=".24"/></pattern>
+  </defs>
+  <rect width="1200" height="1200" rx="600" fill="url(#field)"/>
+  <g filter="url(#blur)" opacity=".78"><path d="M-60 815C195 738 187 368 458 332c210-28 302 246 531 183 107-30 183-105 261-177v596c-242 154-450 198-652 132-251-82-364 63-658-7L-60 815Z" fill="url(#ribbonA)"/><path d="M-73 316C119 407 300 582 480 520c173-60 242-256 435-203 132 36 171 147 328 131v300c-172-101-254-68-379 42-187 165-337 209-555 76C144 767 36 722-73 713V316Z" fill="url(#ribbonB)"/><ellipse cx="705" cy="553" rx="258" ry="332" transform="rotate(34 705 553)" fill="url(#ribbonC)" opacity=".74"/></g>
+  <g opacity=".88"><path d="M35 774C257 700 261 387 477 360c181-23 274 226 483 172 91-24 151-82 207-138" stroke="url(#ribbonA)" stroke-width="74" stroke-linecap="round"/><path d="M35 774C257 700 261 387 477 360c181-23 274 226 483 172 91-24 151-82 207-138" stroke="#FFF5E6" stroke-opacity=".28" stroke-width="2" stroke-linecap="round"/></g>
+  <g opacity=".82"><path d="M126 326c170 94 302 244 458 181 154-62 226-240 387-190 99 31 143 99 225 128" stroke="url(#ribbonB)" stroke-width="41" stroke-linecap="round"/><path d="M126 326c170 94 302 244 458 181 154-62 226-240 387-190 99 31 143 99 225 128" stroke="#FFF5E6" stroke-opacity=".42" stroke-width="1.5" stroke-linecap="round"/></g>
+  <path d="M224 1045c150-195 221-312 353-333 111-18 182 64 305 19 83-30 134-103 211-182" stroke="url(#ribbonC)" stroke-width="23" stroke-linecap="round" opacity=".88"/>
+  <g filter="url(#soft)" opacity=".7"><circle cx="335" cy="238" r="58" fill="#FFD65A"/><circle cx="935" cy="850" r="86" fill="#D81B60"/><circle cx="1040" cy="348" r="39" fill="#38C6B2"/></g>
+  <g fill="#FFF5E6"><circle cx="216" cy="558" r="5"/><circle cx="316" cy="893" r="3"/><circle cx="755" cy="273" r="4"/><circle cx="1010" cy="646" r="5"/><circle cx="582" cy="1000" r="3"/><circle cx="823" cy="917" r="2.5"/></g>
+  <rect width="1200" height="1200" rx="600" fill="url(#grain)" opacity=".7"/>
+</svg>

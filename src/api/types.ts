@@ -1,4 +1,4 @@
-export type UserRole = 'customer' | 'admin' | 'studio';
+export type UserRole = 'customer' | 'studio';
 
 export interface User {
   id: string;
@@ -15,6 +15,12 @@ export interface Painting {
   price: number;
   imageUrl: string;
   status: 'available' | 'sold';
+  saleMode?: 'fixed' | 'auction';
+  auctionEndsAt?: string | null;
+  currentBid?: number | null;
+  bidCount?: number;
+  auctionOpen?: boolean;
+  isHighestBidder?: boolean;
 }
 
 export interface PotteryItem {

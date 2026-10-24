@@ -27,6 +27,7 @@ export const api = {
   getPaintingById: (id: string): Promise<Painting> => services.getPainting(id),
   buyPainting: (params: { paintingId: string; shipping: ShippingAddress }): Promise<{ order: Order; painting: Painting }> =>
     services.buyPainting(params),
+  placePaintingBid: (paintingId: string, amount: number) => services.placePaintingBid(paintingId, amount),
   addPainting: (data: Omit<Painting, 'id' | 'status'>): Promise<Painting> => services.addPainting(data),
   updatePainting: (id: string, data: Partial<Painting>): Promise<Painting> => services.updatePainting(id, data),
 

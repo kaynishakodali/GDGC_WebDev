@@ -14,7 +14,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
       headers: { ...(init.body ? { 'Content-Type': 'application/json' } : {}), ...init.headers }
     });
   } catch {
-    throw { error: { code: 'API_UNAVAILABLE', message: 'The OBSURA server could not be reached. Start the backend and try again.' } } satisfies ApiFailure;
+    throw { error: { code: 'API_UNAVAILABLE', message: 'The ARTOPIA studio server could not be reached. Start the backend and try again.' } } satisfies ApiFailure;
   }
   const result = await response.json().catch(() => ({}));
   if (!response.ok) throw result as ApiFailure;
@@ -46,6 +46,7 @@ export const authService = {
 export async function listPaintings(): Promise<Painting[]> { if (demoMode) return demoStore.listPaintings(); return (await request<{ paintings: Painting[] }>('/paintings')).paintings; }
 export async function getPainting(id: string): Promise<Painting> { if (demoMode) return demoStore.getPainting(id); return (await request<{ painting: Painting }>(`/paintings/${encodeURIComponent(id)}`)).painting; }
 export async function buyPainting(params: { paintingId: string; shipping: ShippingAddress }): Promise<{ order: Order; painting: Painting }> { if (demoMode) return demoStore.buyPainting(params.paintingId, params.shipping); return request('/orders', { method: 'POST', body: body(params) }); }
+export async function placePaintingBid(paintingId: string, amount: number): Promise<{ painting: Painting; bid: { id: string; amount: number; createdAt: string } }> { return request(`/paintings/${encodeURIComponent(paintingId)}/bids`, { method: 'POST', body: body({ amount }) }); }
 export async function addPainting(data: Omit<Painting, 'id' | 'status'>): Promise<Painting> { if (demoMode) return demoStore.addPainting(data); return (await request<{ painting: Painting }>('/paintings', { method: 'POST', body: body(data) })).painting; }
 export async function updatePainting(id: string, data: Partial<Painting>): Promise<Painting> { if (demoMode) return demoStore.updatePainting(id, data); return (await request<{ painting: Painting }>(`/paintings/${encodeURIComponent(id)}`, { method: 'PATCH', body: body(data) })).painting; }
 

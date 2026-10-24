@@ -11,13 +11,13 @@ interface ErrorPageProps {
 
 export const NotFoundPage: React.FC<ErrorPageProps> = ({ user }) => {
   return (
-    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans">
+    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans">
       <BrandBar user={user} />
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
         <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-6 shadow-2xl">
           <Logo variant="mark" size={32} />
         </div>
-        <div className="font-mono text-xs text-[#347AF2] uppercase tracking-[0.2em] mb-2">
+        <div className="font-mono text-xs text-[#273469] uppercase tracking-[0.2em] mb-2">
           Error 404 — Void
         </div>
         <h1 className="font-serif-display text-4xl sm:text-5xl font-normal tracking-tight mb-4 text-white">
@@ -29,7 +29,7 @@ export const NotFoundPage: React.FC<ErrorPageProps> = ({ user }) => {
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/gallery"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#347AF2] hover:bg-[#6CBBD4] text-white font-mono text-xs font-medium shadow-lg transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#273469] hover:bg-[#6CBBD4] text-white font-mono text-xs font-medium shadow-lg transition-all"
           >
             <Compass className="w-4 h-4" />
             <span>Enter Gallery</span>
@@ -49,7 +49,7 @@ export const NotFoundPage: React.FC<ErrorPageProps> = ({ user }) => {
 
 export const ForbiddenPage: React.FC<ErrorPageProps> = ({ user }) => {
   return (
-    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans">
+    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans">
       <BrandBar user={user} />
       <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-6 text-amber-400 shadow-2xl">

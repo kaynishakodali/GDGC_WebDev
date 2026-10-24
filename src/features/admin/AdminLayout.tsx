@@ -41,9 +41,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col md:flex-row font-sans-ui selection:bg-[#42E4D0]/30">
+    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col md:flex-row font-sans-ui selection:bg-[#F4A900]/30">
       {/* ── Left Sidebar Navigation (Calm, Dense, Clean) ── */}
-      <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 bg-[#0B2633] flex flex-col justify-between p-6 sm:p-7 flex-shrink-0">
+      <aside className="w-full md:w-72 border-b md:border-b-0 md:border-r border-white/10 bg-[#273469]/80 backdrop-blur-md flex flex-col justify-between p-6 sm:p-7 flex-shrink-0">
         <div className="space-y-8">
           {/* Top-Left Big Eclipse Logo (at least 56px desktop / 40px mobile) */}
           <div className="pb-6 border-b border-white/10 flex flex-col gap-3">
@@ -56,7 +56,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
               </div>
             </Link>
             <div className="flex items-center justify-between pt-1">
-              <span className="text-[10px] font-mono-hud px-2.5 py-0.5 rounded-full bg-[#579AFF]/15 text-[#579AFF] border border-[#579AFF]/30 uppercase font-semibold">
+              <span className="text-[10px] font-mono-hud px-2.5 py-0.5 rounded-full bg-[#087E8B]/15 text-[#087E8B] border border-[#087E8B]/30 uppercase font-semibold">
                 Studio Admin Desk
               </span>
               <span className="text-[10px] font-mono-hud text-zinc-500">
@@ -81,10 +81,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
                   className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                     isActive
                       ? 'bg-white/10 text-white font-semibold border border-white/15 shadow-sm'
-                      : 'text-[#B7D6D3] hover:text-white hover:bg-white/5'
+                      : 'text-[#E3D0BE] hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#42E4D0]' : 'text-zinc-500'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#F4A900]' : 'text-zinc-500'}`} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -99,14 +99,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
               <div className="font-semibold text-white truncate max-w-[150px]">
                 {user?.name || 'Studio Curator'}
               </div>
-              <div className="text-[10px] font-mono-hud text-[#B7D6D3] truncate">
+              <div className="text-[10px] font-mono-hud text-[#E3D0BE] truncate">
                 {user?.email || 'studio@artstudio.in'}
               </div>
             </div>
             <button
               onClick={handleLogout}
               title="Sign Out of Admin Desk"
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[#B7D6D3] hover:text-white transition-colors cursor-pointer"
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[#E3D0BE] hover:text-white transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -114,7 +114,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ user, children }) => {
 
           <Link
             to="/gallery"
-            className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-[#B7D6D3] hover:text-white text-xs font-medium transition-all flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-[#E3D0BE] hover:text-white text-xs font-medium transition-all flex items-center justify-center gap-2"
           >
             <span>View Public Gallery</span>
             <ExternalLink className="w-3.5 h-3.5" />

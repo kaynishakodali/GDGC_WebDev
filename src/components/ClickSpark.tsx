@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const sparkColors = ['#42E4D0', '#579AFF', '#F48691', '#F3C96B'];
+const sparkColors = ['#F4A900', '#087E8B', '#E34234', '#FFD65A'];
 
 /** Small, short-lived click feedback for links and controls across the site. */
 export function ClickSpark() {
@@ -12,7 +12,7 @@ export function ClickSpark() {
 
       const spark = document.createElement('span');
       const color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
-      spark.className = 'obsura-click-spark';
+      spark.className = 'artopia-click-spark';
       spark.style.left = `${event.clientX}px`;
       spark.style.top = `${event.clientY}px`;
       spark.style.setProperty('--spark-color', color);

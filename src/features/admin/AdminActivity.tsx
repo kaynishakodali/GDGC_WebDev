@@ -38,7 +38,7 @@ export const AdminActivity: React.FC<AdminActivityProps> = ({ user }) => {
 
   const getIcon = (type: string) => {
     switch (type) {
-      case 'order': return <ShoppingBag className="w-4 h-4 text-[#347AF2]" />;
+      case 'order': return <ShoppingBag className="w-4 h-4 text-[#273469]" />;
       case 'booking': return <Calendar className="w-4 h-4 text-[#5CE1E6]" />;
       case 'pottery': return <Layers className="w-4 h-4 text-amber-400" />;
       default: return <Activity className="w-4 h-4 text-zinc-400" />;
@@ -58,7 +58,7 @@ export const AdminActivity: React.FC<AdminActivityProps> = ({ user }) => {
         </div>
 
         {/* Filter Bar */}
-        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#0B2633] border border-white/10 font-mono text-xs overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#273469] border border-white/10 font-mono text-xs overflow-x-auto">
           <span className="text-zinc-500 mr-2 flex items-center gap-1">
             <Filter className="w-3.5 h-3.5" /> Type:
           </span>
@@ -80,14 +80,14 @@ export const AdminActivity: React.FC<AdminActivityProps> = ({ user }) => {
         {/* Activity Timeline */}
         <div className="space-y-3 font-mono">
           {filtered.length === 0 ? (
-            <div className="p-8 rounded-2xl bg-[#0B2633] border border-white/10 text-center text-xs text-zinc-500">
+            <div className="p-8 rounded-2xl bg-[#273469] border border-white/10 text-center text-xs text-zinc-500">
               No matching activity events recorded.
             </div>
           ) : (
             filtered.map((item) => (
               <div
                 key={item.id}
-                className="p-4 rounded-xl bg-[#0B2633] border border-white/10 flex items-start gap-4 hover:border-white/20 transition-colors"
+                className="p-4 rounded-xl bg-[#273469] border border-white/10 flex items-start gap-4 hover:border-white/20 transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   {getIcon(item.type)}

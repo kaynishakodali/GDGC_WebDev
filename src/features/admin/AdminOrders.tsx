@@ -37,23 +37,23 @@ export const AdminOrders: React.FC<AdminOrdersProps> = ({ user }) => {
     <AdminLayout user={user}>
       <div className="space-y-6 max-w-6xl">
         <div className="pb-4 border-b border-white/10 space-y-1">
-          <span className="text-[10px] font-mono-hud text-[#579AFF] uppercase tracking-widest font-semibold block">
+          <span className="text-[10px] font-mono-hud text-[#087E8B] uppercase tracking-widest font-semibold block">
             Read-Only Sales Audit
           </span>
           <h1 className="text-3xl font-display font-light text-white tracking-wide">
             Acquisitions & Shipping Audit
           </h1>
-          <p className="text-xs text-[#B7D6D3]">
+          <p className="text-xs text-[#E3D0BE]">
             Immutable chronological audit of all painting acquisitions. Administrative cancellations are disabled by studio protocol.
           </p>
         </div>
 
         {/* Read-Only Table (Strictly NO cancel button anywhere in admin) */}
-        <div className="rounded-[24px] border border-white/10 overflow-hidden bg-[#0B2633] shadow-xl">
+        <div className="rounded-[24px] border border-white/10 overflow-hidden bg-[#273469] shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans-ui">
               <thead>
-                <tr className="border-b border-white/10 bg-white/[0.03] text-[#B7D6D3] uppercase tracking-wider text-[11px] font-mono-hud">
+                <tr className="border-b border-white/10 bg-white/[0.03] text-[#E3D0BE] uppercase tracking-wider text-[11px] font-mono-hud">
                   <th className="py-3.5 px-4">Ref ID</th>
                   <th className="py-3.5 px-4">Artwork</th>
                   <th className="py-3.5 px-4">Collector</th>
@@ -66,20 +66,20 @@ export const AdminOrders: React.FC<AdminOrdersProps> = ({ user }) => {
               <tbody className="divide-y divide-white/5">
                 {loading ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-12 text-[#B7D6D3] font-mono-hud text-xs">
+                    <td colSpan={7} className="text-center py-12 text-[#E3D0BE] font-mono-hud text-xs">
                       Loading audit records...
                     </td>
                   </tr>
                 ) : orders.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-12 text-[#B7D6D3] font-mono-hud text-xs">
+                    <td colSpan={7} className="text-center py-12 text-[#E3D0BE] font-mono-hud text-xs">
                       No acquisition records found.
                     </td>
                   </tr>
                 ) : (
                   orders.map((ord) => (
                     <tr key={ord.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3.5 px-4 font-mono-hud text-[#42E4D0] text-[11px]">
+                      <td className="py-3.5 px-4 font-mono-hud text-[#F4A900] text-[11px]">
                         {ord.id}
                       </td>
                       <td className="py-3.5 px-4">
@@ -101,13 +101,13 @@ export const AdminOrders: React.FC<AdminOrdersProps> = ({ user }) => {
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="text-white font-medium">{ord.customerName}</div>
-                        <div className="text-[10px] text-[#B7D6D3] font-mono-hud">{ord.customerEmail}</div>
+                        <div className="text-[10px] text-[#E3D0BE] font-mono-hud">{ord.customerEmail}</div>
                       </td>
                       <td className="py-3.5 px-4 max-w-xs">
                         {ord.shipping ? (
-                          <div className="text-[11px] text-[#B7D6D3] space-y-0.5">
+                          <div className="text-[11px] text-[#E3D0BE] space-y-0.5">
                             <div className="text-white font-medium flex items-center gap-1">
-                              <MapPin className="w-3 h-3 text-[#579AFF]" />
+                              <MapPin className="w-3 h-3 text-[#087E8B]" />
                               <span>{ord.shipping.fullName} ({ord.shipping.phone})</span>
                             </div>
                             <div className="truncate">{ord.shipping.line1}{ord.shipping.line2 ? `, ${ord.shipping.line2}` : ''}</div>
@@ -119,22 +119,22 @@ export const AdminOrders: React.FC<AdminOrdersProps> = ({ user }) => {
                           <span className="text-zinc-600 italic">No address recorded</span>
                         )}
                       </td>
-                      <td className="py-3.5 px-4 font-mono-hud font-semibold text-[#579AFF]">
+                      <td className="py-3.5 px-4 font-mono-hud font-semibold text-[#087E8B]">
                         {formatINR(ord.price || ord.pricePaid || 0)}
                       </td>
                       <td className="py-3.5 px-4">
                         <span
                           className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono-hud font-bold uppercase ${
                             ord.status === 'placed'
-                              ? 'bg-[#F3C96B]/20 text-[#F3C96B] border border-[#F3C96B]/30'
+                              ? 'bg-[#FFD65A]/20 text-[#FFD65A] border border-[#FFD65A]/30'
                               : 'bg-[#FF5C5C]/20 text-[#FF5C5C] border border-[#FF5C5C]/30'
                           }`}
                         >
-                          <span className={`w-1.5 h-1.5 rounded-full ${ord.status === 'placed' ? 'bg-[#F3C96B]' : 'bg-[#FF5C5C]'}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full ${ord.status === 'placed' ? 'bg-[#FFD65A]' : 'bg-[#FF5C5C]'}`} />
                           {ord.status}
                         </span>
                       </td>
-                      <td className="py-3.5 px-4 text-right text-[11px] font-mono-hud text-[#B7D6D3]">
+                      <td className="py-3.5 px-4 text-right text-[11px] font-mono-hud text-[#E3D0BE]">
                         {new Date(ord.createdAt).toLocaleDateString()}
                       </td>
                     </tr>

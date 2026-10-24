@@ -92,7 +92,7 @@ export const AdminBookings: React.FC<AdminBookingsProps> = ({ user }) => {
         )}
 
         {/* Filter Bar */}
-        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#0B2633] border border-white/10 font-mono text-xs overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#273469] border border-white/10 font-mono text-xs overflow-x-auto">
           <span className="text-zinc-500 mr-2">Filter Status:</span>
           {['all', 'requested', 'confirmed', 'declined', 'cancelled'].map((s) => (
             <button
@@ -110,7 +110,7 @@ export const AdminBookings: React.FC<AdminBookingsProps> = ({ user }) => {
         </div>
 
         {/* Dense Bookings Table */}
-        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#0B2633] shadow-xl">
+        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#273469] shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
@@ -197,7 +197,7 @@ export const AdminBookings: React.FC<AdminBookingsProps> = ({ user }) => {
         {/* Confirmation Modal */}
         {actionTarget && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in font-mono">
-            <div className="w-full max-w-sm bg-[#0B2633] border border-white/15 rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="w-full max-w-sm bg-[#273469] border border-white/15 rounded-2xl p-6 shadow-2xl space-y-4">
               <h3 className="text-base font-bold text-white capitalize">
                 {actionTarget.action} Mural Reservation
               </h3>

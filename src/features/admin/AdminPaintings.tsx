@@ -34,6 +34,8 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
   const [formDesc, setFormDesc] = useState('');
   const [formPrice, setFormPrice] = useState(12000);
   const [formImage, setFormImage] = useState('/seed/images/p-001.jpg');
+  const [formSaleMode, setFormSaleMode] = useState<'fixed' | 'auction'>('fixed');
+  const [formAuctionEndsAt, setFormAuctionEndsAt] = useState('');
   const [modalError, setModalError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -57,6 +59,9 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
     setFormDesc('');
     setFormPrice(15000);
     setFormImage('/seed/images/p-001.jpg');
+    setFormSaleMode('fixed');
+    const defaultEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    setFormAuctionEndsAt(new Date(defaultEnd.getTime() - defaultEnd.getTimezoneOffset() * 60000).toISOString().slice(0, 16));
     setModalError(null);
     setIsModalOpen(true);
   };
@@ -69,6 +74,10 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
     setFormDesc(p.description);
     setFormPrice(p.price);
     setFormImage(p.imageUrl);
+    setFormSaleMode(p.saleMode ?? 'fixed');
+    const defaultEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    const endDate = p.auctionEndsAt ? new Date(p.auctionEndsAt) : defaultEnd;
+    setFormAuctionEndsAt(new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16));
     setModalError(null);
     setIsModalOpen(true);
   };
@@ -85,7 +94,9 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
           artist: formArtist,
           description: formDesc,
           price: Number(formPrice),
-          imageUrl: formImage
+          imageUrl: formImage,
+          saleMode: formSaleMode,
+          auctionEndsAt: formSaleMode === 'auction' ? new Date(formAuctionEndsAt).toISOString() : null
         });
       } else {
         await api.addPainting({
@@ -93,7 +104,9 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
           artist: formArtist,
           description: formDesc,
           price: Number(formPrice),
-          imageUrl: formImage
+          imageUrl: formImage,
+          saleMode: formSaleMode,
+          auctionEndsAt: formSaleMode === 'auction' ? new Date(formAuctionEndsAt).toISOString() : null
         });
       }
       setIsModalOpen(false);
@@ -129,7 +142,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
 
           <button
             onClick={openAddModal}
-            className="px-4 py-2.5 rounded-xl bg-[#347AF2] hover:bg-[#7d68ff] text-white font-mono text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md active:scale-98 self-start sm:self-auto"
+            className="px-4 py-2.5 rounded-xl bg-[#273469] hover:bg-[#7d68ff] text-white font-mono text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md active:scale-98 self-start sm:self-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Add Artwork</span>
@@ -137,7 +150,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-xl bg-[#0B2633] border border-white/10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-3.5 rounded-xl bg-[#273469] border border-white/10">
           <div className="flex items-center gap-2 w-full sm:w-80 bg-[#10212C] px-3 py-1.5 rounded-lg border border-white/5">
             <Search className="w-4 h-4 text-zinc-500" />
             <input
@@ -168,7 +181,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
         </div>
 
         {/* Dense Inventory Table */}
-        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#0B2633] shadow-xl">
+        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#273469] shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
@@ -201,7 +214,15 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                         </div>
                       </td>
                       <td className="py-3 px-4 text-zinc-300 font-sans">{p.artist}</td>
-                      <td className="py-3 px-4 font-bold text-emerald-400">{formatINR(p.price)}</td>
+                      <td className="py-3 px-4 font-bold text-emerald-400">
+                        {p.saleMode === 'auction' ? (
+                          <div className="space-y-1">
+                            <div className="text-[10px] text-zinc-400">Opening {formatINR(p.price)}</div>
+                            <div>Current {formatINR(p.currentBid ?? p.price)}</div>
+                            <div className="text-[10px] text-zinc-400">{p.bidCount ?? 0} bids</div>
+                          </div>
+                        ) : formatINR(p.price)}
+                      </td>
                       <td className="py-3 px-4">
                         {isSold ? (
                           <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold inline-flex items-center gap-1">
@@ -242,7 +263,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
         {/* Modal: Add / Edit Painting */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-            <div className="relative w-full max-w-lg bg-[#0B2633] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-5">
+            <div className="relative w-full max-w-lg bg-[#273469] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-5">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white rounded-lg hover:bg-white/5 transition-colors"
@@ -269,7 +290,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                     value={formTitle}
                     onChange={(e) => setFormTitle(e.target.value)}
                     placeholder="e.g. Warli Harvest Ritual"
-                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#347AF2]"
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
                   />
                 </div>
 
@@ -281,21 +302,48 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                     value={formArtist}
                     onChange={(e) => setFormArtist(e.target.value)}
                     placeholder="e.g. Meera Kumari"
-                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#347AF2]"
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-zinc-400 mb-1">Price (₹ INR)</label>
+                  <label className="block text-zinc-400 mb-1">{formSaleMode === 'auction' ? 'Opening bid (₹ INR)' : 'Price (₹ INR)'}</label>
                   <input
                     type="number"
                     required
-                    min="500"
+                    min={formSaleMode === 'auction' ? '1' : '500'}
                     value={formPrice}
                     onChange={(e) => setFormPrice(Number(e.target.value))}
-                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#347AF2]"
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
                   />
                 </div>
+
+                <div>
+                  <label className="block text-zinc-400 mb-1">Sale format</label>
+                  <select
+                    value={formSaleMode}
+                    onChange={(e) => setFormSaleMode(e.target.value as 'fixed' | 'auction')}
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
+                  >
+                    <option value="fixed">Fixed price</option>
+                    <option value="auction">Bidding auction</option>
+                  </select>
+                </div>
+
+                {formSaleMode === 'auction' && (
+                  <div>
+                    <label className="block text-zinc-400 mb-1">Auction closes</label>
+                    <input
+                      type="datetime-local"
+                      required
+                      min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16)}
+                      value={formAuctionEndsAt}
+                      onChange={(e) => setFormAuctionEndsAt(e.target.value)}
+                      className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
+                    />
+                    <p className="mt-1 text-[10px] text-zinc-500">The opening bid uses the price above. Each new bid must be at least ₹1 higher.</p>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-zinc-400 mb-1">Image Reference Path / URL</label>
@@ -305,7 +353,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                     value={formImage}
                     onChange={(e) => setFormImage(e.target.value)}
                     placeholder="/seed/images/p-001.jpg"
-                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#347AF2]"
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl px-3.5 py-2 text-white outline-none focus:border-[#273469]"
                   />
                 </div>
 
@@ -316,7 +364,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                     value={formDesc}
                     onChange={(e) => setFormDesc(e.target.value)}
                     placeholder="Artistic style, pigments, dimensions..."
-                    className="w-full bg-[#10212C] border border-white/10 rounded-xl p-3 text-white outline-none focus:border-[#347AF2]"
+                    className="w-full bg-[#10212C] border border-white/10 rounded-xl p-3 text-white outline-none focus:border-[#273469]"
                   />
                 </div>
 
@@ -331,7 +379,7 @@ export const AdminPaintings: React.FC<AdminPaintingsProps> = ({ user }) => {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="flex-1 py-2.5 rounded-xl bg-[#347AF2] hover:bg-[#7d68ff] text-white font-bold transition-all disabled:opacity-50"
+                    className="flex-1 py-2.5 rounded-xl bg-[#273469] hover:bg-[#7d68ff] text-white font-bold transition-all disabled:opacity-50"
                   >
                     {saving ? 'Saving...' : 'Save Record'}
                   </button>

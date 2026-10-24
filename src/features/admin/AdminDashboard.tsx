@@ -51,10 +51,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
         {/* Real Count Tiles */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Paintings Count Tile */}
-          <div className="p-5 rounded-2xl bg-[#0B2633] border border-white/10 space-y-3">
+          <div className="p-5 rounded-2xl bg-[#273469] border border-white/10 space-y-3">
             <div className="flex items-center justify-between text-zinc-400">
               <span className="text-xs font-mono uppercase tracking-wider">Paintings</span>
-              <Palette className="w-4 h-4 text-[#347AF2]" />
+              <Palette className="w-4 h-4 text-[#273469]" />
             </div>
             <div className="text-3xl font-mono font-bold text-white">
               {metrics ? metrics.paintings.total : '—'}
@@ -70,7 +70,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
           </div>
 
           {/* Mural Bookings Count Tile */}
-          <div className="p-5 rounded-2xl bg-[#0B2633] border border-white/10 space-y-3">
+          <div className="p-5 rounded-2xl bg-[#273469] border border-white/10 space-y-3">
             <div className="flex items-center justify-between text-zinc-400">
               <span className="text-xs font-mono uppercase tracking-wider">Mural Bookings</span>
               <Calendar className="w-4 h-4 text-[#5CE1E6]" />
@@ -89,7 +89,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
           </div>
 
           {/* Pottery Commissions Count Tile */}
-          <div className="p-5 rounded-2xl bg-[#0B2633] border border-white/10 space-y-3">
+          <div className="p-5 rounded-2xl bg-[#273469] border border-white/10 space-y-3">
             <div className="flex items-center justify-between text-zinc-400">
               <span className="text-xs font-mono uppercase tracking-wider">Pottery Orders</span>
               <Layers className="w-4 h-4 text-amber-400" />
@@ -108,7 +108,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
           </div>
 
           {/* Painting Sales Count Tile */}
-          <div className="p-5 rounded-2xl bg-[#0B2633] border border-white/10 space-y-3">
+          <div className="p-5 rounded-2xl bg-[#273469] border border-white/10 space-y-3">
             <div className="flex items-center justify-between text-zinc-400">
               <span className="text-xs font-mono uppercase tracking-wider">Sales Audit</span>
               <ShoppingBag className="w-4 h-4 text-emerald-400" />
@@ -154,10 +154,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
             {metrics && metrics.pottery.requested > 0 && (
               <Link
                 to="/admin/pottery"
-                className="p-4 rounded-xl bg-[#347AF2]/10 border border-[#347AF2]/25 hover:border-[#347AF2]/50 flex items-center justify-between transition-all group"
+                className="p-4 rounded-xl bg-[#273469]/10 border border-[#273469]/25 hover:border-[#273469]/50 flex items-center justify-between transition-all group"
               >
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-[#347AF2]" />
+                  <Clock className="w-5 h-5 text-[#273469]" />
                   <div>
                     <div className="text-xs font-bold text-white">
                       {metrics.pottery.requested} Pottery {metrics.pottery.requested === 1 ? 'Commission' : 'Commissions'} Awaiting Review
@@ -165,7 +165,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ user }) => {
                     <div className="text-[11px] font-mono text-zinc-400">Review glaze & kiln scheduling</div>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-[#347AF2] group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-[#273469] group-hover:translate-x-1 transition-transform" />
               </Link>
             )}
 

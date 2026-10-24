@@ -41,7 +41,7 @@ export const DitherImage: React.FC<DitherImageProps> = ({
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
       style={aspectRatio ? { aspectRatio: `${aspectRatio}` } : undefined}
-      className={`relative overflow-hidden group select-none bg-[#0B2633] ${className}`}
+      className={`relative overflow-hidden group select-none bg-[#273469] ${className}`}
     >
       {/* Base Full Color Image */}
       <img
@@ -66,7 +66,7 @@ export const DitherImage: React.FC<DitherImageProps> = ({
       )}
 
       {/* Fine dither border highlight */}
-      <div className="absolute inset-0 border border-white/10 group-hover:border-[#347AF2]/50 transition-colors pointer-events-none" />
+      <div className="absolute inset-0 border border-white/10 group-hover:border-[#273469]/50 transition-colors pointer-events-none" />
     </div>
   );
 };

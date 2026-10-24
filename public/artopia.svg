@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs><linearGradient id="pigment" x1="8" y1="8" x2="56" y2="58"><stop stop-color="#F4A900"/><stop offset=".48" stop-color="#E34234"/><stop offset="1" stop-color="#D81B60"/></linearGradient></defs>
+  <path d="M8 55V31a24 24 0 0 1 48 0v24" stroke="url(#pigment)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M16 55V32a16 16 0 0 1 32 0v23" stroke="#087E8B" stroke-width="2" stroke-dasharray="2 3"/>
+  <path d="M20 47c7-2 12-7 17-15 3-5 6-9 11-11" stroke="url(#pigment)" stroke-width="4" stroke-linecap="round"/><path d="M17 55h31" stroke="#FFD65A" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="47.5" cy="19.5" r="3.2" fill="#477A45" stroke="#FFF5E6" stroke-width="1.2"/>
+</svg>

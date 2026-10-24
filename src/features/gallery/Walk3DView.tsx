@@ -82,8 +82,8 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
 
     // ── 1. SCENE SETUP ──
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x080a17);
-    scene.fog = new THREE.FogExp2(0x080a17, 0.025);
+    scene.background = new THREE.Color(0x28201c);
+    scene.fog = new THREE.FogExp2(0x28201c, 0.025);
 
     const camera = new THREE.PerspectiveCamera(
       50,
@@ -105,7 +105,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
     const ambientLight = new THREE.AmbientLight(0xfff5ea, 0.35);
     scene.add(ambientLight);
 
-    const centerPointLight = new THREE.PointLight(0x9be7ff, 0.9, 25);
+    const centerPointLight = new THREE.PointLight(0xf4a900, 0.9, 25);
     centerPointLight.position.set(0, 4, 0);
     scene.add(centerPointLight);
 
@@ -113,7 +113,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
     // Glossy dark mirror-like ground fading to black
     const floorGeo = new THREE.PlaneGeometry(60, 60, 32, 32);
     const floorMat = new THREE.MeshStandardMaterial({
-      color: 0x080a17,
+      color: 0x28201c,
       roughness: 0.15,
       metalness: 0.85
     });
@@ -125,7 +125,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
     // Secondary subtle glossy mirror illusion ring
     const innerRingGeo = new THREE.RingGeometry(0.5, 18, 64);
     const innerRingMat = new THREE.MeshBasicMaterial({
-      color: 0x111a33,
+      color: 0x273469,
       side: THREE.DoubleSide,
       transparent: true,
       opacity: 0.25
@@ -150,14 +150,14 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       starPositions[i * 3 + 1] = Math.abs(rad * Math.cos(phi)) + 1; // Above ground
       starPositions[i * 3 + 2] = rad * Math.sin(phi) * Math.sin(theta);
 
-      // Lilac / ivory / pale aqua stars
+      // Marigold / warm ivory / peacock stars
       const colorType = Math.random();
       if (colorType > 0.6) {
-        starColors[i * 3] = 0.79; starColors[i * 3 + 1] = 0.72; starColors[i * 3 + 2] = 1.0; // Lilac
+        starColors[i * 3] = 1.0; starColors[i * 3 + 1] = 0.66; starColors[i * 3 + 2] = 0.0; // Marigold
       } else if (colorType > 0.3) {
-        starColors[i * 3] = 0.96; starColors[i * 3 + 1] = 0.95; starColors[i * 3 + 2] = 1.0; // Ivory
+        starColors[i * 3] = 1.0; starColors[i * 3 + 1] = 0.93; starColors[i * 3 + 2] = 0.82; // Warm ivory
       } else {
-        starColors[i * 3] = 0.62; starColors[i * 3 + 1] = 0.91; starColors[i * 3 + 2] = 0.95; // Aqua
+        starColors[i * 3] = 0.03; starColors[i * 3 + 1] = 0.55; starColors[i * 3 + 2] = 0.61; // Peacock
       }
     }
 
@@ -208,16 +208,16 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       tex.colorSpace = THREE.SRGBColorSpace;
 
       const materials = [
-        new THREE.MeshStandardMaterial({ color: 0x111a33 }), // Right
-        new THREE.MeshStandardMaterial({ color: 0x111a33 }), // Left
-        new THREE.MeshStandardMaterial({ color: 0x111a33 }), // Top
-        new THREE.MeshStandardMaterial({ color: 0x111a33 }), // Bottom
+        new THREE.MeshStandardMaterial({ color: 0x273469 }), // Right
+        new THREE.MeshStandardMaterial({ color: 0x273469 }), // Left
+        new THREE.MeshStandardMaterial({ color: 0x273469 }), // Top
+        new THREE.MeshStandardMaterial({ color: 0x273469 }), // Bottom
         new THREE.MeshStandardMaterial({
           map: tex,
           roughness: 0.3,
           color: p.status === 'sold' ? 0x999999 : 0xffffff
         }), // Front
-        new THREE.MeshStandardMaterial({ color: 0x080a17 })  // Back
+        new THREE.MeshStandardMaterial({ color: 0x28201c })  // Back
       ];
 
       const mesh = new THREE.Mesh(frameGeo, materials);
@@ -228,7 +228,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       // Glowing edge accent
       const edgeGeo = new THREE.EdgesGeometry(frameGeo);
       const edgeMat = new THREE.LineBasicMaterial({
-        color: p.status === 'sold' ? 0xff5c5c : 0x9be7ff,
+        color: p.status === 'sold' ? 0xff5c5c : 0xf4a900,
         transparent: true,
         opacity: p.status === 'sold' ? 0.3 : 0.6
       });
@@ -270,7 +270,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       // Floating Pedestal
       const plinthGeo = new THREE.CylinderGeometry(0.8, 0.9, 1.4, 32);
       const plinthMat = new THREE.MeshStandardMaterial({
-        color: 0x111a33,
+        color: 0x273469,
         roughness: 0.2,
         metalness: 0.8
       });
@@ -280,7 +280,7 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       // Base glowing ring
       const ringGeo = new THREE.RingGeometry(0.85, 1.1, 32);
       const ringMat = new THREE.MeshBasicMaterial({
-        color: 0x9be7ff,
+        color: 0xf4a900,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.7
@@ -500,22 +500,22 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
   }, [paintings, potteryItems, activeSection, muralRate, handleOpenPainting, handleOpenPottery]);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#06111D] text-[#F6F3E9] select-none">
+    <div className="relative w-full h-screen overflow-hidden bg-[#28201C] text-[#FFF5E6] select-none">
       {/* ── Three.js Canvas Container ── */}
       <div ref={containerRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
 
       {/* ── Top-Right: 3D / Browse Switch Pill ── */}
       <div className="absolute top-6 right-6 z-40 flex items-center gap-2">
-        <div className="flex items-center p-1 rounded-full bg-[#0B2633]/80 backdrop-blur-xl border border-white/10 shadow-xl">
+        <div className="flex items-center p-1 rounded-full bg-[#273469]/80 backdrop-blur-xl border border-white/10 shadow-xl">
           <button
-            className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#42E4D0] text-[#06111D] shadow-sm flex items-center gap-1.5"
+            className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F4A900] text-[#28201C] shadow-sm flex items-center gap-1.5"
           >
             <Compass className="w-3.5 h-3.5" />
-            <span>3D Galaxy</span>
+            <span>3D Gallery</span>
           </button>
           <button
             onClick={onSwitchToBrowse}
-            className="px-4 py-1.5 rounded-full text-xs font-medium text-[#B7D6D3] hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-1.5 rounded-full text-xs font-medium text-[#E3D0BE] hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer"
           >
             <Grid className="w-3.5 h-3.5" />
             <span>Browse Grid</span>
@@ -524,37 +524,37 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
       </div>
 
       {/* ── Bottom-Left: Target Controls Card (Exact match to galaxy-gallery-target.png) ── */}
-      <div className="absolute bottom-6 left-6 z-40 hidden sm:flex flex-col gap-2 p-4 rounded-[22px] bg-[#0B2633]/75 backdrop-blur-2xl border border-white/10 text-xs shadow-2xl min-w-[190px]">
-        <div className="flex items-center gap-1.5 font-mono-hud text-[11px] text-[#42E4D0] uppercase tracking-wider font-semibold pb-1.5 border-b border-white/10">
+      <div className="absolute bottom-6 left-6 z-40 hidden sm:flex flex-col gap-2 p-4 rounded-[22px] bg-[#273469]/75 backdrop-blur-2xl border border-white/10 text-xs shadow-2xl min-w-[190px]">
+        <div className="flex items-center gap-1.5 font-mono-hud text-[11px] text-[#F4A900] uppercase tracking-wider font-semibold pb-1.5 border-b border-white/10">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Controls</span>
         </div>
         <div className="space-y-2 pt-1 font-sans-ui text-[12px]">
-          <div className="flex items-center gap-2 text-[#F6F3E9]">
+          <div className="flex items-center gap-2 text-[#FFF5E6]">
             <span className="p-1.5 rounded-lg bg-white/5 border border-white/10">
-              <RotateCcw className="w-3.5 h-3.5 text-[#42E4D0]" />
+              <RotateCcw className="w-3.5 h-3.5 text-[#F4A900]" />
             </span>
             <div>
               <div className="font-medium">Rotate</div>
-              <div className="text-[10px] text-[#B7D6D3]">Drag / Swipe</div>
+              <div className="text-[10px] text-[#E3D0BE]">Drag / Swipe</div>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-[#F6F3E9]">
+          <div className="flex items-center gap-2 text-[#FFF5E6]">
             <span className="p-1.5 rounded-lg bg-white/5 border border-white/10">
-              <ZoomIn className="w-3.5 h-3.5 text-[#579AFF]" />
+              <ZoomIn className="w-3.5 h-3.5 text-[#087E8B]" />
             </span>
             <div>
               <div className="font-medium">Zoom</div>
-              <div className="text-[10px] text-[#B7D6D3]">Scroll / Pinch</div>
+              <div className="text-[10px] text-[#E3D0BE]">Scroll / Pinch</div>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-[#F6F3E9]">
+          <div className="flex items-center gap-2 text-[#FFF5E6]">
             <span className="p-1.5 rounded-lg bg-white/5 border border-white/10">
-              <MousePointer className="w-3.5 h-3.5 text-[#68C6B7]" />
+              <MousePointer className="w-3.5 h-3.5 text-[#477A45]" />
             </span>
             <div>
               <div className="font-medium">Inspect</div>
-              <div className="text-[10px] text-[#B7D6D3]">Click / Tap Art</div>
+              <div className="text-[10px] text-[#E3D0BE]">Click / Tap Art</div>
             </div>
           </div>
         </div>
@@ -566,17 +566,17 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
         {activeSection === 'paintings' && activeArtwork && (
           <div
             onClick={() => handleOpenPainting(activeArtwork)}
-            className="w-full p-3.5 rounded-2xl bg-[#0B2633]/85 backdrop-blur-xl border border-white/15 shadow-2xl flex items-center justify-between gap-3 cursor-pointer group hover:border-[#42E4D0] transition-all"
+            className="w-full p-3.5 rounded-2xl bg-[#273469]/85 backdrop-blur-xl border border-white/15 shadow-2xl flex items-center justify-between gap-3 cursor-pointer group hover:border-[#F4A900] transition-all"
           >
             <div className="min-w-0">
-              <h4 className="font-display font-light text-sm text-white truncate group-hover:text-[#42E4D0] transition-colors">
+              <h4 className="font-display font-light text-sm text-white truncate group-hover:text-[#F4A900] transition-colors">
                 {activeArtwork.title}
               </h4>
-              <p className="text-[11px] text-[#B7D6D3] truncate">
-                {activeArtwork.artist} • <span className="font-mono-hud text-[#579AFF] font-semibold">{formatINR(activeArtwork.price)}</span>
+              <p className="text-[11px] text-[#E3D0BE] truncate">
+                {activeArtwork.artist} • <span className="font-mono-hud text-[#087E8B] font-semibold">{formatINR(activeArtwork.price)}</span>
               </p>
             </div>
-            <span className="px-3 py-1 rounded-full bg-[#42E4D0] text-[#06111D] text-[11px] font-bold tracking-wide flex items-center gap-1 flex-shrink-0 shadow-md">
+            <span className="px-3 py-1 rounded-full bg-[#F4A900] text-[#28201C] text-[11px] font-bold tracking-wide flex items-center gap-1 flex-shrink-0 shadow-md">
               <span>View</span>
               <ArrowRight className="w-3 h-3" />
             </span>
@@ -584,13 +584,13 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
         )}
 
         {/* Bottom Section Switcher: Paintings | Pottery */}
-        <div className="flex items-center p-1 rounded-full bg-[#0B2633]/90 backdrop-blur-2xl border border-white/15 shadow-2xl">
+        <div className="flex items-center p-1 rounded-full bg-[#273469]/90 backdrop-blur-2xl border border-white/15 shadow-2xl">
           <button
             onClick={() => setActiveSection('paintings')}
             className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
               activeSection === 'paintings'
-                ? 'bg-[#42E4D0] text-[#06111D] shadow-md'
-                : 'text-[#B7D6D3] hover:text-white'
+                ? 'bg-[#F4A900] text-[#28201C] shadow-md'
+                : 'text-[#E3D0BE] hover:text-white'
             }`}
           >
             Paintings Ring
@@ -599,8 +599,8 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
             onClick={() => setActiveSection('pottery')}
             className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
               activeSection === 'pottery'
-                ? 'bg-[#42E4D0] text-[#06111D] shadow-md'
-                : 'text-[#B7D6D3] hover:text-white'
+                ? 'bg-[#F4A900] text-[#28201C] shadow-md'
+                : 'text-[#E3D0BE] hover:text-white'
             }`}
           >
             Pottery Atelier
@@ -610,12 +610,12 @@ export const Walk3DView: React.FC<Walk3DViewProps> = ({
 
       {/* ── Bottom-Right: Target Auto-Rotate Toggle (Match to screenshot) ── */}
       <div className="absolute bottom-6 right-6 z-40 flex items-center gap-3">
-        <label className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#0B2633]/75 backdrop-blur-2xl border border-white/10 text-xs text-[#F6F3E9] font-medium shadow-2xl cursor-pointer">
+        <label className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#273469]/75 backdrop-blur-2xl border border-white/10 text-xs text-[#FFF5E6] font-medium shadow-2xl cursor-pointer">
           <input
             type="checkbox"
             checked={autoRotate}
             onChange={(e) => setAutoRotate(e.target.checked)}
-            className="w-4 h-4 accent-[#42E4D0] rounded cursor-pointer"
+            className="w-4 h-4 accent-[#F4A900] rounded cursor-pointer"
           />
           <span>Auto-Rotate</span>
         </label>
