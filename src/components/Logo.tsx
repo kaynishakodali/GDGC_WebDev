@@ -7,31 +7,29 @@ interface LogoProps {
   monochrome?: boolean;
 }
 
-/** ARTOPIA's sun-arch mark pairs a hand-drawn brush arc with a gallery doorway. */
-export const Logo: React.FC<LogoProps> = ({ variant = 'full', size = 56, className = '', monochrome = false }) => {
-  const gradientId = `artopia-pigment-${useId().replace(/:/g, '')}`;
-  const ink = monochrome ? '#FFF5E6' : `url(#${gradientId})`;
+export const Logo: React.FC<LogoProps> = ({ variant = 'full', size = 56, className = '' }) => {
+  const gradientId = `obsura-orbit-${useId().replace(/:/g, '')}`;
 
   return (
-    <div className={`inline-flex items-center gap-3 select-none ${className}`} aria-label="ARTOPIA — Rooted in India. Made to Move You.">
-      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" className="shrink-0 overflow-visible">
+    <div className={`inline-flex items-center gap-3 select-none ${className}`} aria-label="OBSURA independent art studio">
+      <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" className="shrink-0">
         <defs>
-          <linearGradient id={gradientId} x1="8" y1="8" x2="56" y2="58" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#F4A900" />
-            <stop offset=".48" stopColor="#E34234" />
-            <stop offset="1" stopColor="#D81B60" />
+          <linearGradient id={gradientId} x1="9" y1="14" x2="57" y2="52" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#42E4D0" />
+            <stop offset="0.48" stopColor="#347AF2" />
+            <stop offset="0.78" stopColor="#F48691" />
+            <stop offset="1" stopColor="#F3C96B" />
           </linearGradient>
         </defs>
-        <path d="M8 55V31C8 17.7 18.7 7 32 7s24 10.7 24 24v24" stroke={ink} strokeWidth="2.4" strokeLinecap="round" />
-        <path d="M16 55V32a16 16 0 0 1 32 0v23" stroke="#087E8B" strokeWidth="1.4" strokeDasharray="2 3" />
-        <path d="M20 47c7-2 12-7 17-15 3-5 6-9 11-11" stroke={ink} strokeWidth="3.2" strokeLinecap="round" />
-        <path d="M17 55h31" stroke="#FFD65A" strokeWidth="2.4" strokeLinecap="round" />
-        <circle cx="47.5" cy="19.5" r="3.2" fill="#477A45" stroke="#FFF5E6" strokeWidth="1.2" />
-        <path d="m12 17 1.5 3.4 3.5 1.4-3.5 1.4L12 27l-1.4-3.8L7 21.8l3.6-1.4L12 17Z" fill="#FFD65A" />
+        <circle cx="32" cy="32" r="28" fill="#06111D" stroke={`url(#${gradientId})`} strokeOpacity=".8" strokeWidth="1.5" />
+        <ellipse cx="32" cy="32" rx="24" ry="10.5" transform="rotate(-32 32 32)" stroke={`url(#${gradientId})`} strokeWidth="2.2" />
+        <path d="M39.7 13.6c-10.3 1.1-17.8 8.5-17.8 18.7 0 10.7 7.6 18.1 18.6 18.1-3.4 2.1-7.4 3.3-11.8 3.3-12.2 0-21.1-8.7-21.1-20.4 0-12.3 9.2-21.1 21.8-21.1 3.7 0 7.2.5 10.3 1.4Z" fill={`url(#${gradientId})`} />
+        <circle cx="49.5" cy="17" r="2.7" fill="#F3C96B" />
+        <path d="m16 14 1.3 3.8 3.7 1.2-3.7 1.3-1.3 3.7-1.2-3.7-3.8-1.3 3.8-1.2L16 14Z" fill="#F6F3E9" fillOpacity=".9" />
       </svg>
       {variant === 'full' && (
-        <span className="font-display text-[1.35rem] sm:text-2xl font-semibold tracking-[0.15em] text-[#FFF5E6] uppercase leading-none">
-          ARTOPIA
+        <span className="font-display text-2xl sm:text-3xl font-light tracking-[0.24em] text-[#F6F3E9] uppercase leading-none">
+          OBSURA
         </span>
       )}
     </div>

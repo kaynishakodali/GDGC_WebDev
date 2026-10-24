@@ -49,7 +49,7 @@ export const PaintingDetailPage: React.FC<PaintingDetailProps> = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans-ui">
+    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans-ui">
       <BrandBar user={user} />
 
       {error ? (
@@ -58,7 +58,7 @@ export const PaintingDetailPage: React.FC<PaintingDetailProps> = ({ user }) => {
             <AlertCircle className="w-7 h-7" />
           </div>
           <h2 className="text-2xl font-display font-light text-white">Painting Unavailable</h2>
-          <p className="text-xs text-[#E3D0BE] max-w-sm">{error}</p>
+          <p className="text-xs text-[#B7D6D3] max-w-sm">{error}</p>
           <button
             onClick={handleClose}
             className="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-xs font-medium text-white flex items-center gap-2 cursor-pointer"
@@ -68,9 +68,9 @@ export const PaintingDetailPage: React.FC<PaintingDetailProps> = ({ user }) => {
           </button>
         </div>
       ) : loading ? (
-        <div className="flex-1 flex items-center justify-center font-mono-hud text-xs text-[#E3D0BE]">
+        <div className="flex-1 flex items-center justify-center font-mono-hud text-xs text-[#B7D6D3]">
           <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#F4A900] animate-ping" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#42E4D0] animate-ping" />
             <span>Loading masterwork...</span>
           </div>
         </div>

@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'node:crypto';
 import { z, ZodError } from 'zod';
-import { Prisma, Role, PaintingStatus, PaintingSaleMode, OrderStatus, BookingStatus, PotteryRequestStatus, ActivityType } from '@prisma/client';
+import { Prisma, Role, PaintingStatus, OrderStatus, BookingStatus, PotteryRequestStatus, ActivityType } from '@prisma/client';
 import { prisma } from './db.js';
 import { calculateMuralTotal, canPurchasePainting, dateRangeError, hasAnyRole, kolkataDate, ownsResource, shiftIsoDate } from './policy.js';
 import { createSessionToken, hashSessionToken, isSessionExpired, sessionExpiry } from './session.js';
@@ -31,19 +31,13 @@ class HttpError extends Error {
   constructor(public status: number, public code: string, message: string, public fields?: Record<string, string>) { super(message); }
 }
 type AuthUser = { id: string; name: string; email: string; role: Role };
-const userPublic = ({ id, name, email, role }: AuthUser) => ({ id, name, email, role: role === Role.customer ? Role.customer : Role.studio });
+const userPublic = ({ id, name, email, role }: AuthUser) => ({ id, name, email, role });
 const parse = <T>(schema: z.ZodType<T>, input: unknown): T => schema.parse(input);
 const asyncRoute = (handler: (req: Request, res: Response, next: NextFunction) => Promise<unknown>) => (req: Request, res: Response, next: NextFunction) => { void handler(req, res, next).catch(next); };
 function cookieValue(req: Request, name: string) {
   const found = req.headers.cookie?.split(';').map((part) => part.trim()).find((part) => part.startsWith(`${name}=`));
   if (!found) return undefined;
   try { return decodeURIComponent(found.slice(name.length + 1)); } catch { return undefined; }
-}
-async function optionalUserId(req: Request) {
-  const raw = cookieValue(req, COOKIE);
-  if (!raw) return null;
-  const session = await prisma.session.findUnique({ where: { tokenHash: hashSessionToken(raw) }, select: { userId: true, expiresAt: true } });
-  return session && !isSessionExpired(session.expiresAt) ? session.userId : null;
 }
 function setSessionCookie(res: Response, value: string, maxAge: number) {
   const secure = isProd ? '; Secure' : '';
@@ -76,8 +70,7 @@ const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 const dateSchema = z.string().regex(datePattern).refine((value) => !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value, 'Use a valid YYYY-MM-DD date.');
 const signupSchema = z.object({ name: z.string().trim().min(2).max(100), email: z.string().trim().email().max(254), password: z.string().min(10).max(128) });
 const loginSchema = z.object({ email: z.string().trim().email().max(254), password: z.string().min(1).max(128) });
-const paintingSchema = z.object({ title: z.string().trim().min(1).max(160), artist: z.string().trim().min(1).max(120), description: z.string().trim().min(1).max(3000), price: z.number().int().nonnegative().max(100_000_000), imageUrl: z.string().trim().min(1).max(1000).refine((value) => /^https:\/\/[^\s]+$/i.test(value) || /^\/?(?:seed\/)?images\/[a-z0-9._-]+$/i.test(value), 'Use an HTTPS image URL or a supplied seed image path.'), status: z.enum(['available', 'sold']).optional(), saleMode: z.nativeEnum(PaintingSaleMode).optional(), auctionEndsAt: z.string().datetime({ offset: true }).nullable().optional() });
-const bidSchema = z.object({ amount: z.number().int().positive().max(100_000_000) });
+const paintingSchema = z.object({ title: z.string().trim().min(1).max(160), artist: z.string().trim().min(1).max(120), description: z.string().trim().min(1).max(3000), price: z.number().int().nonnegative().max(100_000_000), imageUrl: z.string().trim().min(1).max(1000).refine((value) => /^https:\/\/[^\s]+$/i.test(value) || /^\/?(?:seed\/)?images\/[a-z0-9._-]+$/i.test(value), 'Use an HTTPS image URL or a supplied seed image path.'), status: z.enum(['available', 'sold']).optional() });
 const shippingSchema = z.object({ fullName: z.string().trim().min(1).max(120), phone: z.string().trim().regex(/^[6-9]\d{9}$/), line1: z.string().trim().min(1).max(250), line2: z.string().trim().max(250).optional(), street: z.string().trim().max(250).optional(), city: z.string().trim().min(1).max(100), state: z.string().trim().min(1).max(100), pincode: z.string().trim().regex(/^\d{6}$/) });
 const orderSchema = z.object({ paintingId: z.string().min(1).max(100), shipping: shippingSchema });
 const bookingSchema = z.object({ date: dateSchema, sizeSqFt: z.number().int().min(10).max(500), address: z.string().trim().min(10).max(1000) });
@@ -86,9 +79,6 @@ const pageQuery = z.object({ page: z.coerce.number().int().min(1).default(1), li
 function pageMeta(page: number, limit: number, total: number) { return { page, limit, total, pages: Math.ceil(total / limit) }; }
 function imagePath(value: string) { if (/^https:\/\//i.test(value)) return value; const clean = value.replace(/^\/+/, ''); return clean.startsWith('seed/') ? `/${clean}` : `/seed/${clean}`; }
 async function activity(tx: Prisma.TransactionClient, type: ActivityType, title: string, description: string, actorId?: string) { await tx.activity.create({ data: { type, title, description, actorId } }); }
-async function lockBookingDate(tx: Prisma.TransactionClient, date: string) {
-  await tx.$queryRaw<{ locked: string }[]>`WITH lock AS MATERIALIZED (SELECT pg_advisory_xact_lock(hashtext(${date}))) SELECT 'locked'::text AS locked FROM lock`;
-}
 function currentUser(res: Response) { return res.locals.user as AuthUser; }
 function publicOrder(order: any) { return { ...order, paintingTitle: order.painting?.title, paintingImage: order.painting?.imageUrl, userId: order.customerId, price: order.pricePaid }; }
 
@@ -120,16 +110,13 @@ app.post('/api/auth/logout', asyncRoute(async (req, res) => {
 app.get('/api/paintings', asyncRoute(async (req, res) => {
   const query = pageQuery.extend({ status: z.enum(['available', 'sold']).optional(), sort: z.enum(['price-asc', 'price-desc']).optional() }).parse(req.query);
   const where = query.status ? { status: query.status as PaintingStatus } : {};
-  const userId = await optionalUserId(req);
-  const [total, rows] = await prisma.$transaction([prisma.painting.count({ where }), prisma.painting.findMany({ where, include: { bids: { orderBy: [{ amount: 'desc' }, { createdAt: 'asc' }], take: 1, select: { amount: true, customerId: true } }, _count: { select: { bids: true } } }, orderBy: query.sort ? { price: query.sort === 'price-asc' ? 'asc' : 'desc' } : { createdAt: 'asc' }, skip: (query.page - 1) * query.limit, take: query.limit })]);
-  res.json({ paintings: rows.map(({ bids, _count, ...row }) => ({ ...row, imageUrl: imagePath(row.imageUrl), currentBid: bids[0]?.amount ?? null, bidCount: _count.bids, auctionOpen: row.saleMode === PaintingSaleMode.auction && row.status === PaintingStatus.available && Boolean(row.auctionEndsAt && row.auctionEndsAt > new Date()), isHighestBidder: Boolean(userId && bids[0]?.customerId === userId) })), pagination: pageMeta(query.page, query.limit, total) });
+  const [total, rows] = await prisma.$transaction([prisma.painting.count({ where }), prisma.painting.findMany({ where, orderBy: query.sort ? { price: query.sort === 'price-asc' ? 'asc' : 'desc' } : { createdAt: 'asc' }, skip: (query.page - 1) * query.limit, take: query.limit })]);
+  res.json({ paintings: rows.map((row) => ({ ...row, imageUrl: imagePath(row.imageUrl) })), pagination: pageMeta(query.page, query.limit, total) });
 }));
-app.get('/api/paintings/:id', asyncRoute(async (req, res) => { const { id } = parse(idParam, req.params); const [painting, userId] = await Promise.all([prisma.painting.findUnique({ where: { id }, include: { bids: { orderBy: [{ amount: 'desc' }, { createdAt: 'asc' }], take: 1, select: { amount: true, customerId: true } }, _count: { select: { bids: true } } } }), optionalUserId(req)]); if (!painting) throw new HttpError(404, 'NOT_FOUND', 'Artwork not found.'); const { bids, _count, ...row } = painting; res.json({ painting: { ...row, imageUrl: imagePath(row.imageUrl), currentBid: bids[0]?.amount ?? null, bidCount: _count.bids, auctionOpen: row.saleMode === PaintingSaleMode.auction && row.status === PaintingStatus.available && Boolean(row.auctionEndsAt && row.auctionEndsAt > new Date()), isHighestBidder: Boolean(userId && bids[0]?.customerId === userId) } }); }));
+app.get('/api/paintings/:id', asyncRoute(async (req, res) => { const { id } = parse(idParam, req.params); const painting = await prisma.painting.findUnique({ where: { id } }); if (!painting) throw new HttpError(404, 'NOT_FOUND', 'Artwork not found.'); res.json({ painting: { ...painting, imageUrl: imagePath(painting.imageUrl) } }); }));
 app.post('/api/paintings', ...studioOnly, asyncRoute(async (req, res) => {
   const data = parse(paintingSchema, req.body); const id = `p-${randomBytes(5).toString('hex')}`;
-  const saleMode = data.saleMode ?? PaintingSaleMode.fixed; const auctionEndsAt = saleMode === PaintingSaleMode.auction && data.auctionEndsAt ? new Date(data.auctionEndsAt) : null;
-  if (saleMode === PaintingSaleMode.auction && (data.price < 1 || !auctionEndsAt || auctionEndsAt <= new Date())) throw new HttpError(422, 'VALIDATION_ERROR', 'Auction paintings need a positive opening bid and a future end time.', { ...(data.price < 1 ? { price: 'Opening bid must be at least ₹1.' } : {}), ...(!auctionEndsAt || auctionEndsAt <= new Date() ? { auctionEndsAt: 'Choose a future auction end time.' } : {}) });
-  const painting = await prisma.$transaction(async (tx) => { const created = await tx.painting.create({ data: { title: data.title, artist: data.artist, description: data.description, price: data.price, imageUrl: data.imageUrl.replace(/^\/seed\//, ''), saleMode, auctionEndsAt, id, status: PaintingStatus.available } }); await activity(tx, ActivityType.painting, 'Painting Added', `${currentUser(res).name} added "${created.title}"`, currentUser(res).id); return created; });
+  const painting = await prisma.$transaction(async (tx) => { const created = await tx.painting.create({ data: { ...data, id, status: PaintingStatus.available, imageUrl: data.imageUrl.replace(/^\/seed\//, '') } }); await activity(tx, ActivityType.painting, 'Painting Added', `${currentUser(res).name} added "${created.title}"`, currentUser(res).id); return created; });
   res.status(201).json({ painting: { ...painting, imageUrl: imagePath(painting.imageUrl) } });
 }));
 app.patch('/api/paintings/:id', ...studioOnly, asyncRoute(async (req, res) => {
@@ -137,33 +124,8 @@ app.patch('/api/paintings/:id', ...studioOnly, asyncRoute(async (req, res) => {
   const existing = await prisma.painting.findUnique({ where: { id } }); if (!existing) throw new HttpError(404, 'NOT_FOUND', 'Painting not found.');
   if (existing.status === PaintingStatus.sold) throw new HttpError(409, 'PAINTING_LOCKED', 'Sold artwork cannot be edited.');
   if (data.status === 'available') { const activeOrder = await prisma.order.findFirst({ where: { paintingId: id, status: OrderStatus.placed } }); if (activeOrder) throw new HttpError(409, 'PAINTING_LOCKED', 'An active order prevents making this artwork available.'); }
-  const saleMode = data.saleMode ?? existing.saleMode;
-  const auctionEndsAt = data.auctionEndsAt === undefined ? existing.auctionEndsAt : data.auctionEndsAt ? new Date(data.auctionEndsAt) : null;
-  if (saleMode === PaintingSaleMode.auction && ((data.price ?? existing.price) < 1 || !auctionEndsAt || auctionEndsAt <= new Date())) throw new HttpError(422, 'VALIDATION_ERROR', 'Auction paintings need a positive opening bid and a future end time.', { ...((data.price ?? existing.price) < 1 ? { price: 'Opening bid must be at least ₹1.' } : {}), ...(!auctionEndsAt || auctionEndsAt <= new Date() ? { auctionEndsAt: 'Choose a future auction end time.' } : {}) });
-  const auctionSettingsChanged = (data.saleMode !== undefined && data.saleMode !== existing.saleMode) || (data.price !== undefined && data.price !== existing.price) || (data.auctionEndsAt !== undefined && (data.auctionEndsAt ? new Date(data.auctionEndsAt).getTime() : null) !== (existing.auctionEndsAt?.getTime() ?? null));
-  if (auctionSettingsChanged) {
-    const bidCount = await prisma.bid.count({ where: { paintingId: id } });
-    if (bidCount > 0) throw new HttpError(409, 'AUCTION_LOCKED', 'Auction settings and opening price cannot change after the first bid.');
-  }
-  const { auctionEndsAt: _incomingEnd, ...fields } = data;
-  const painting = await prisma.painting.update({ where: { id }, data: { ...fields, saleMode, auctionEndsAt: saleMode === PaintingSaleMode.auction ? auctionEndsAt : null, ...(data.imageUrl ? { imageUrl: data.imageUrl.replace(/^\/seed\//, '') } : {}) } });
+  const painting = await prisma.painting.update({ where: { id }, data: { ...data, ...(data.imageUrl ? { imageUrl: data.imageUrl.replace(/^\/seed\//, '') } : {}) } });
   res.json({ painting: { ...painting, imageUrl: imagePath(painting.imageUrl) } });
-}));
-app.post('/api/paintings/:id/bids', ...customerOnly, asyncRoute(async (req, res) => {
-  const { id } = parse(idParam, req.params); const { amount } = parse(bidSchema, req.body); const user = currentUser(res);
-  const result = await prisma.$transaction(async (tx) => {
-    await tx.$queryRaw<{ id: string }[]>`SELECT "id" FROM "Painting" WHERE "id" = ${id} FOR UPDATE`;
-    const painting = await tx.painting.findUnique({ where: { id } }); if (!painting) throw new HttpError(404, 'NOT_FOUND', 'Artwork not found.');
-    if (painting.status !== PaintingStatus.available || painting.saleMode !== PaintingSaleMode.auction || !painting.auctionEndsAt || painting.auctionEndsAt <= new Date()) throw new HttpError(409, 'AUCTION_CLOSED', 'This auction is not open for bids.');
-    const highest = await tx.bid.findFirst({ where: { paintingId: id }, orderBy: [{ amount: 'desc' }, { createdAt: 'asc' }] });
-    const minimum = highest ? highest.amount + 1 : painting.price;
-    if (amount < minimum) throw new HttpError(422, 'VALIDATION_ERROR', `Your bid must be at least ${minimum}.`, { amount: `Enter at least ₹${minimum}.` });
-    const bid = await tx.bid.create({ data: { paintingId: id, customerId: user.id, amount } });
-    await activity(tx, ActivityType.painting, 'New Painting Bid', `${user.name} placed a bid on "${painting.title}"`, user.id);
-    const bidCount = await tx.bid.count({ where: { paintingId: id } });
-    return { painting, bid, bidCount };
-  });
-  res.status(201).json({ bid: result.bid, painting: { ...result.painting, imageUrl: imagePath(result.painting.imageUrl), currentBid: result.bid.amount, bidCount: result.bidCount, auctionOpen: true, isHighestBidder: true } });
 }));
 
 app.get('/api/pottery/items', asyncRoute(async (_req, res) => res.json({ potteryItems: await prisma.potteryItem.findMany({ where: { active: true }, orderBy: { id: 'asc' }, select: { id: true, name: true } }) })));
@@ -180,7 +142,7 @@ app.post('/api/bookings', ...customerOnly, asyncRoute(async (req, res) => {
   const data = parse(bookingSchema, req.body); const dateError = dateRangeError(data.date, 7, 90); if (dateError) throw new HttpError(422, 'VALIDATION_ERROR', 'Booking validation failed.', { date: dateError });
   const user = currentUser(res); const config = await prisma.appConfig.findUnique({ where: { id: 'default' } }); const rate = config?.muralRate ?? 150;
   const booking = await prisma.$transaction(async (tx) => {
-    await lockBookingDate(tx, data.date);
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${data.date}))`;
     const conflict = await tx.wallBooking.findFirst({ where: { date: data.date, status: { in: [BookingStatus.requested, BookingStatus.confirmed] } } }); if (conflict) throw new HttpError(409, 'DATE_UNAVAILABLE', 'Someone just booked that date. Please select another date from the calendar.');
     const created = await tx.wallBooking.create({ data: { ...data, customerId: user.id, customerName: user.name, customerEmail: user.email, ratePerSqFt: rate, totalPrice: calculateMuralTotal(data.sizeSqFt, rate), currency: config?.currency ?? 'INR' } });
     await activity(tx, ActivityType.booking, 'Mural Date Requested', `${user.name} requested a mural for ${data.date} (${data.sizeSqFt} sq ft)`, user.id); return created;
@@ -223,18 +185,10 @@ app.get('/api/orders', requireAuth, asyncRoute(async (_req, res) => { const user
 app.post('/api/orders', ...customerOnly, asyncRoute(async (req, res) => {
   const data = parse(orderSchema, req.body); const user = currentUser(res);
   const result = await prisma.$transaction(async (tx) => {
-    await tx.$queryRaw<{ id: string }[]>`SELECT "id" FROM "Painting" WHERE "id" = ${data.paintingId} FOR UPDATE`;
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${data.paintingId}))`;
     const painting = await tx.painting.findUnique({ where: { id: data.paintingId } }); if (!painting) throw new HttpError(404, 'NOT_FOUND', 'Artwork not found.');
     const activeOrder = await tx.order.findFirst({ where: { paintingId: painting.id, status: OrderStatus.placed } }); if (!canPurchasePainting(painting.status, Boolean(activeOrder))) throw new HttpError(409, 'PAINTING_SOLD', 'This painting is no longer available.');
-    let finalPrice = painting.price;
-    if (painting.saleMode === PaintingSaleMode.auction) {
-      if (!painting.auctionEndsAt || painting.auctionEndsAt > new Date()) throw new HttpError(409, 'AUCTION_OPEN', 'This painting is still in its bidding period.');
-      const highest = await tx.bid.findFirst({ where: { paintingId: painting.id }, orderBy: [{ amount: 'desc' }, { createdAt: 'asc' }] });
-      if (!highest) throw new HttpError(409, 'AUCTION_NO_BIDS', 'This auction ended without bids.');
-      if (highest.customerId !== user.id) throw new HttpError(403, 'AUCTION_NOT_WINNER', 'Only the highest bidder can complete this acquisition.');
-      finalPrice = highest.amount;
-    }
-    const order = await tx.order.create({ data: { customerId: user.id, paintingId: painting.id, customerName: user.name, customerEmail: user.email, pricePaid: finalPrice, shipping: data.shipping as Prisma.InputJsonValue }, include: { painting: true } });
+    const order = await tx.order.create({ data: { customerId: user.id, paintingId: painting.id, customerName: user.name, customerEmail: user.email, pricePaid: painting.price, shipping: data.shipping as Prisma.InputJsonValue }, include: { painting: true } });
     await tx.painting.update({ where: { id: painting.id }, data: { status: PaintingStatus.sold } }); await activity(tx, ActivityType.order, 'Painting Acquired', `${user.name} acquired "${painting.title}" (${painting.id})`, user.id); return order;
   });
   const order = { ...publicOrder(result), painting: { ...result.painting, imageUrl: imagePath(result.painting.imageUrl) }, paintingImage: imagePath(result.painting.imageUrl) };

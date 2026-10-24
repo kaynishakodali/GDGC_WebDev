@@ -377,7 +377,7 @@ class DemoStore {
     if (!user) {
       throw { status: 401, error: { code: 'UNAUTHORIZED', message: 'Authentication required to acquire an original artwork' } };
     }
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Curators cannot acquire original paintings from studio inventory' } };
     }
 
@@ -454,7 +454,7 @@ class DemoStore {
     const order = this.state.orders.find((o) => o.id === orderId);
     if (!order) throw { status: 404, error: { code: 'NOT_FOUND', message: 'Order not found' } };
 
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admin audit log is immutable: orders cannot be cancelled by admin' } };
     }
 
@@ -501,7 +501,7 @@ class DemoStore {
     await this.delay();
     const user = this.state.currentUser;
     if (!user) return [];
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       return [...this.state.potteryRequests];
     }
     return this.state.potteryRequests.filter((r) => r.userId === user.id);
@@ -517,7 +517,7 @@ class DemoStore {
     await this.delay();
     const user = this.state.currentUser;
     if (!user) throw { status: 401, error: { code: 'UNAUTHORIZED', message: 'Sign in to request custom pottery' } };
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admins cannot place commission requests' } };
     }
 
@@ -642,7 +642,7 @@ class DemoStore {
   async updatePotteryStatus(id: string, status: 'accepted' | 'declined'): Promise<PotteryRequest> {
     await this.delay();
     const user = this.state.currentUser;
-    if (!user || (user.role !== 'studio')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'studio')) {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admin role required' } };
     }
 
@@ -688,7 +688,7 @@ class DemoStore {
     await this.delay();
     const user = this.state.currentUser;
     if (!user) throw { status: 401, error: { code: 'UNAUTHORIZED', message: 'Please sign in to book a mural commission' } };
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Curators cannot book murals' } };
     }
 
@@ -761,7 +761,7 @@ class DemoStore {
     await this.delay();
     const user = this.state.currentUser;
     if (!user) return [];
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       return [...this.state.bookings];
     }
     return this.state.bookings.filter((b) => b.userId === user.id);
@@ -804,7 +804,7 @@ class DemoStore {
   async updateBookingStatus(id: string, status: 'confirmed' | 'declined'): Promise<WallBooking> {
     await this.delay();
     const user = this.state.currentUser;
-    if (!user || (user.role !== 'studio')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'studio')) {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admin role required' } };
     }
 
@@ -832,7 +832,7 @@ class DemoStore {
   async addPainting(data: Omit<Painting, 'id' | 'status'>): Promise<Painting> {
     await this.delay();
     const user = this.state.currentUser;
-    if (!user || (user.role !== 'studio')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'studio')) {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admin role required' } };
     }
 
@@ -855,7 +855,7 @@ class DemoStore {
   async updatePainting(id: string, data: Partial<Painting>): Promise<Painting> {
     await this.delay();
     const user = this.state.currentUser;
-    if (!user || (user.role !== 'studio')) {
+    if (!user || (user.role !== 'admin' && user.role !== 'studio')) {
       throw { status: 403, error: { code: 'FORBIDDEN', message: 'Admin role required' } };
     }
 
@@ -886,7 +886,7 @@ class DemoStore {
     await this.delay();
     const user = this.state.currentUser;
     if (!user) return [];
-    if (user.role === 'studio') {
+    if (user.role === 'admin' || user.role === 'studio') {
       return [...this.state.orders];
     }
     return this.state.orders.filter((o) => o.userId === user.id);
@@ -971,13 +971,13 @@ class DemoStore {
     this.saveState(this.state);
   }
 
-  switchRole(role: 'customer' | 'studio') {
-    if (role === 'studio') {
+  switchRole(role: 'customer' | 'admin') {
+    if (role === 'admin') {
       this.state.currentUser = {
         id: 'usr-admin-studio',
         name: 'Studio Curator',
         email: 'studio@artstudio.in',
-        role: 'studio'
+        role: 'admin'
       };
     } else {
       this.state.currentUser = {

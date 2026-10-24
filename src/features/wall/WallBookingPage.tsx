@@ -123,12 +123,12 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
           aria-disabled={isDisabled}
           className={`h-10 sm:h-12 rounded-xl text-xs sm:text-sm font-mono-hud transition-all relative flex flex-col items-center justify-center cursor-pointer ${
             isSelected
-              ? 'bg-[#F4A900] text-[#28201C] font-bold shadow-lg shadow-[#F4A900]/20 scale-105 z-10'
+              ? 'bg-[#42E4D0] text-[#06111D] font-bold shadow-lg shadow-[#42E4D0]/20 scale-105 z-10'
               : isBooked
               ? 'bg-rose-500/10 text-rose-400/40 border border-rose-500/10 cursor-not-allowed'
               : isOutOfRange
               ? 'text-zinc-600 cursor-not-allowed opacity-30'
-              : 'text-[#FFF5E6] hover:bg-white/10 hover:border-white/20 border border-white/5'
+              : 'text-[#F6F3E9] hover:bg-white/10 hover:border-white/20 border border-white/5'
           }`}
         >
           <span>{day}</span>
@@ -209,54 +209,54 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans-ui relative overflow-hidden">
+    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans-ui relative overflow-hidden">
       {/* Background Aurora */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 right-1/4 w-[500px] h-[500px] rounded-full bg-[#087E8B]/50 blur-[140px] animate-aurora-1" />
-        <div className="absolute bottom-10 left-10 w-[400px] h-[400px] rounded-full bg-[#273469]/80 blur-[130px] animate-aurora-2" />
+        <div className="absolute top-20 right-1/4 w-[500px] h-[500px] rounded-full bg-[#103B46]/50 blur-[140px] animate-aurora-1" />
+        <div className="absolute bottom-10 left-10 w-[400px] h-[400px] rounded-full bg-[#0B2633]/80 blur-[130px] animate-aurora-2" />
       </div>
 
       <BrandBar user={user} />
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-5 sm:px-8 py-8 relative z-10 flex flex-col justify-center">
         {bookingSuccess ? (
-          <div className="rounded-[28px] bg-[#273469]/85 backdrop-blur-2xl border border-white/15 p-8 sm:p-12 shadow-2xl text-center space-y-6">
-            <div className="w-16 h-16 mx-auto rounded-full bg-[#FFD65A]/20 border border-[#FFD65A]/40 flex items-center justify-center text-[#FFD65A]">
+          <div className="rounded-[28px] bg-[#0B2633]/85 backdrop-blur-2xl border border-white/15 p-8 sm:p-12 shadow-2xl text-center space-y-6">
+            <div className="w-16 h-16 mx-auto rounded-full bg-[#F3C96B]/20 border border-[#F3C96B]/40 flex items-center justify-center text-[#F3C96B]">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <span className="text-[11px] font-mono-hud text-[#FFD65A] uppercase tracking-widest font-semibold">
+              <span className="text-[11px] font-mono-hud text-[#F3C96B] uppercase tracking-widest font-semibold">
                 Status: Requested
               </span>
               <h2 className="text-3xl sm:text-4xl font-display font-light text-white tracking-wide">
                 Mural Date Reserved
               </h2>
-              <p className="text-xs sm:text-sm text-[#E3D0BE] max-w-md mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm text-[#B7D6D3] max-w-md mx-auto leading-relaxed">
                 Your architectural wall commission is scheduled for{' '}
                 <strong className="text-white font-mono-hud">{bookingSuccess.date}</strong>. The lead muralist will contact you to inspect wall texture and verify design concepts.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#28201C]/60 border border-white/10 max-w-md mx-auto text-left text-xs space-y-2">
+            <div className="p-5 rounded-2xl bg-[#06111D]/60 border border-white/10 max-w-md mx-auto text-left text-xs space-y-2">
               <div className="flex justify-between">
-                <span className="text-[#E3D0BE]">Surface Area</span>
+                <span className="text-[#B7D6D3]">Surface Area</span>
                 <span className="text-white font-mono-hud">{bookingSuccess.sizeSqFt} sq ft</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#E3D0BE]">Rate Applied</span>
+                <span className="text-[#B7D6D3]">Rate Applied</span>
                 <span className="text-white font-mono-hud">₹{bookingSuccess.ratePerSqFt}/sq ft</span>
               </div>
               <div className="flex justify-between font-semibold pt-2 border-t border-white/10">
                 <span className="text-white">Estimated Investment</span>
-                <span className="text-[#E34234] font-mono-hud">{formatINR(bookingSuccess.totalPrice)}</span>
+                <span className="text-[#F48691] font-mono-hud">{formatINR(bookingSuccess.totalPrice)}</span>
               </div>
             </div>
 
             <div className="pt-4 flex flex-wrap justify-center gap-4">
               <Link
                 to="/account"
-                className="px-7 py-3 rounded-full bg-[#F4A900] hover:bg-[#D81B60] text-[#28201C] font-bold text-xs uppercase tracking-wider transition-all shadow-lg"
+                className="px-7 py-3 rounded-full bg-[#42E4D0] hover:bg-[#31C8C3] text-[#06111D] font-bold text-xs uppercase tracking-wider transition-all shadow-lg"
               >
                 Track in Dashboard
               </Link>
@@ -269,14 +269,14 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
             </div>
           </div>
         ) : (
-          <div className="rounded-[28px] bg-[#273469]/85 backdrop-blur-2xl border border-white/15 p-6 sm:p-10 shadow-2xl space-y-8 relative overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#F4A900] via-[#087E8B] to-[#477A45]" />
+          <div className="rounded-[28px] bg-[#0B2633]/85 backdrop-blur-2xl border border-white/15 p-6 sm:p-10 shadow-2xl space-y-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#42E4D0] via-[#579AFF] to-[#68C6B7]" />
 
             {/* Stepper Header */}
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
-                  <span className="text-[10px] font-mono-hud text-[#F4A900] uppercase tracking-widest block">
+                  <span className="text-[10px] font-mono-hud text-[#42E4D0] uppercase tracking-widest block">
                     Site-Specific Architectural Commission
                   </span>
                   <h1 className="text-2xl sm:text-3xl font-display font-light text-white tracking-wide">
@@ -284,7 +284,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                   </h1>
                 </div>
 
-                <span className="text-xs font-mono-hud text-[#E3D0BE] hidden sm:block">
+                <span className="text-xs font-mono-hud text-[#B7D6D3] hidden sm:block">
                   Step {step} of 4
                 </span>
               </div>
@@ -301,10 +301,10 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                     key={s.n}
                     className={`py-2 text-center rounded-xl transition-all ${
                       step === s.n
-                        ? 'bg-[#F4A900] text-[#28201C] font-bold shadow-md'
+                        ? 'bg-[#42E4D0] text-[#06111D] font-bold shadow-md'
                         : step > s.n
-                        ? 'bg-white/10 text-[#FFD65A]'
-                        : 'bg-white/5 text-[#E3D0BE]'
+                        ? 'bg-white/10 text-[#F3C96B]'
+                        : 'bg-white/5 text-[#B7D6D3]'
                     }`}
                   >
                     <span>{s.label}</span>
@@ -326,7 +326,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-base font-semibold text-white">Select Installation Date</h3>
-                    <p className="text-xs text-[#E3D0BE]">
+                    <p className="text-xs text-[#B7D6D3]">
                       Available from 7 days ({minDateStr}) to 90 days ahead.
                     </p>
                   </div>
@@ -365,9 +365,9 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                 )}
 
                 {date && (
-                  <div className="p-3.5 rounded-2xl bg-[#28201C]/60 border border-white/10 flex items-center justify-between text-xs">
-                    <span className="text-[#E3D0BE]">Selected Calendar Date:</span>
-                    <span className="text-[#FFD65A] font-mono-hud font-bold">{date}</span>
+                  <div className="p-3.5 rounded-2xl bg-[#06111D]/60 border border-white/10 flex items-center justify-between text-xs">
+                    <span className="text-[#B7D6D3]">Selected Calendar Date:</span>
+                    <span className="text-[#F3C96B] font-mono-hud font-bold">{date}</span>
                   </div>
                 )}
               </div>
@@ -378,24 +378,24 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-base font-semibold text-white">Wall Dimensions & Rate Calculation</h3>
-                  <p className="text-xs text-[#E3D0BE]">
+                  <p className="text-xs text-[#B7D6D3]">
                     Define total wall surface area in square feet. Rate: ₹{ratePerSqFt}/sq ft.
                   </p>
                 </div>
 
                 {/* Animated Interactive Wall Preview Box */}
-                <div className="w-full h-44 rounded-2xl bg-[#28201C] border border-white/10 flex items-center justify-center p-6 relative overflow-hidden">
+                <div className="w-full h-44 rounded-2xl bg-[#06111D] border border-white/10 flex items-center justify-center p-6 relative overflow-hidden">
                   <div
                     style={{
                       width: `${Math.min(90, Math.max(25, (sizeSqFt / 500) * 85 + 20))}%`,
                       height: '75%'
                     }}
-                    className="rounded-xl border-2 border-dashed border-[#F4A900] bg-[#F4A900]/10 flex flex-col items-center justify-center transition-all duration-300 relative shadow-inner"
+                    className="rounded-xl border-2 border-dashed border-[#42E4D0] bg-[#42E4D0]/10 flex flex-col items-center justify-center transition-all duration-300 relative shadow-inner"
                   >
                     <span className="font-mono-hud text-lg font-bold text-white">
                       {sizeSqFt} sq ft
                     </span>
-                    <span className="text-[10px] text-[#E3D0BE] mt-0.5">Scale Representation</span>
+                    <span className="text-[10px] text-[#B7D6D3] mt-0.5">Scale Representation</span>
                   </div>
                 </div>
 
@@ -409,9 +409,9 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                       step="5"
                       value={sizeSqFt}
                       onChange={(e) => setSizeSqFt(Number(e.target.value))}
-                      className="flex-1 accent-[#F4A900] cursor-pointer h-2"
+                      className="flex-1 accent-[#42E4D0] cursor-pointer h-2"
                     />
-                    <div className="flex items-center gap-1.5 bg-[#28201C] border border-white/15 px-3 py-1.5 rounded-xl font-mono-hud text-sm">
+                    <div className="flex items-center gap-1.5 bg-[#06111D] border border-white/15 px-3 py-1.5 rounded-xl font-mono-hud text-sm">
                       <input
                         type="number"
                         min="10"
@@ -425,11 +425,11 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                   </div>
 
                   {/* Exact prompt formula: "Rate: ₹{ratePerSqFt}/sq ft × {size} = ₹{total}" */}
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[#273469] to-[#087E8B] border border-white/10 flex items-center justify-between text-xs sm:text-sm font-mono-hud">
-                    <span className="text-[#E3D0BE]">
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[#0B2633] to-[#103B46] border border-white/10 flex items-center justify-between text-xs sm:text-sm font-mono-hud">
+                    <span className="text-[#B7D6D3]">
                       Rate: ₹{ratePerSqFt}/sq ft × {sizeSqFt} =
                     </span>
-                    <span className="text-xl font-bold text-[#E34234] animate-pulse">
+                    <span className="text-xl font-bold text-[#F48691] animate-pulse">
                       {formatINR(totalPrice)}
                     </span>
                   </div>
@@ -442,7 +442,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
               <div className="space-y-5">
                 <div>
                   <h3 className="text-base font-semibold text-white">Installation Address</h3>
-                  <p className="text-xs text-[#E3D0BE]">
+                  <p className="text-xs text-[#B7D6D3]">
                     Provide full on-site physical address where scaffolding and muralists will deploy.
                   </p>
                 </div>
@@ -456,7 +456,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                       setFieldErrors((prev) => ({ ...prev, address: '' }));
                     }}
                     placeholder="Enter complete building name, flat/villa number, street, locality, city and postal PIN code..."
-                    className="w-full bg-[#28201C]/60 border border-white/15 focus:border-[#F4A900] rounded-2xl p-4 text-xs sm:text-sm text-white placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#F4A900]"
+                    className="w-full bg-[#06111D]/60 border border-white/15 focus:border-[#42E4D0] rounded-2xl p-4 text-xs sm:text-sm text-white placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#42E4D0]"
                   />
                   {fieldErrors.address && (
                     <p className="text-xs text-[#FF5C5C] font-mono-hud mt-1.5">{fieldErrors.address}</p>
@@ -470,31 +470,31 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-base font-semibold text-white">Review Mural Commission</h3>
-                  <p className="text-xs text-[#E3D0BE]">
+                  <p className="text-xs text-[#B7D6D3]">
                     Please verify your chosen date and site specifications before final submission.
                   </p>
                 </div>
 
-                <div className="p-5 rounded-2xl bg-[#28201C]/60 border border-white/10 space-y-3 text-xs">
+                <div className="p-5 rounded-2xl bg-[#06111D]/60 border border-white/10 space-y-3 text-xs">
                   <div className="flex justify-between items-center">
-                    <span className="text-[#E3D0BE]">Execution Date</span>
+                    <span className="text-[#B7D6D3]">Execution Date</span>
                     <span className="font-mono-hud font-bold text-white">{date}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#E3D0BE]">Wall Surface</span>
+                    <span className="text-[#B7D6D3]">Wall Surface</span>
                     <span className="font-mono-hud text-white">{sizeSqFt} square feet</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#E3D0BE]">Rate Formula</span>
-                    <span className="font-mono-hud text-[#E3D0BE]">₹{ratePerSqFt}/sq ft × {sizeSqFt}</span>
+                    <span className="text-[#B7D6D3]">Rate Formula</span>
+                    <span className="font-mono-hud text-[#B7D6D3]">₹{ratePerSqFt}/sq ft × {sizeSqFt}</span>
                   </div>
                   <div className="pt-2 border-t border-white/10 flex justify-between items-center text-sm font-bold">
                     <span className="text-white">Total Investment</span>
-                    <span className="font-mono-hud text-[#E34234] text-lg">{formatINR(totalPrice)}</span>
+                    <span className="font-mono-hud text-[#F48691] text-lg">{formatINR(totalPrice)}</span>
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 text-xs text-[#E3D0BE] space-y-1">
+                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 text-xs text-[#B7D6D3] space-y-1">
                   <span className="text-white font-medium block">Site Location:</span>
                   <p className="font-sans-ui">{address}</p>
                 </div>
@@ -507,7 +507,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                 <button
                   type="button"
                   onClick={() => setStep((s) => s - 1)}
-                  className="px-5 py-2.5 rounded-full border border-white/15 text-xs text-[#E3D0BE] hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 rounded-full border border-white/15 text-xs text-[#B7D6D3] hover:text-white hover:bg-white/5 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Previous</span>
@@ -520,7 +520,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="px-7 py-2.5 rounded-full bg-[#F4A900] hover:bg-[#D81B60] text-[#28201C] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 cursor-pointer"
+                  className="px-7 py-2.5 rounded-full bg-[#42E4D0] hover:bg-[#31C8C3] text-[#06111D] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 cursor-pointer"
                 >
                   <span>Continue</span>
                   <ArrowRight className="w-4 h-4" />
@@ -530,7 +530,7 @@ export const WallBookingPage: React.FC<WallBookingProps> = ({ user }) => {
                   type="button"
                   disabled={loading}
                   onClick={handleSubmit}
-                  className="px-8 py-3 rounded-full bg-[#FFD65A] hover:bg-[#D7A85B] text-[#28201C] font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-[#FFD65A]/20 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-8 py-3 rounded-full bg-[#F3C96B] hover:bg-[#D7A85B] text-[#06111D] font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-[#F3C96B]/20 flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {loading ? (
                     <span>Submitting Request...</span>

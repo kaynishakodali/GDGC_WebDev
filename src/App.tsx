@@ -6,8 +6,6 @@ import { DevPanel } from './components/DevPanel';
 import { FloatingStudioArt } from './components/FloatingStudioArt';
 import { ClickSpark } from './components/ClickSpark';
 import { StudioAtmosphere } from './components/StudioAtmosphere';
-import { CartProvider } from './components/CartContext';
-import { CartPage } from './components/CartPage';
 
 // Features
 import { LandingPage } from './features/landing/LandingPage';
@@ -42,13 +40,7 @@ function ScrollToTop() {
 
 function RouteTransition({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
-  const isLandingPage = pathname === '/';
-  return (
-    <div key={pathname} className="route-enter relative isolate">
-      <FloatingStudioArt className={isLandingPage ? 'z-[5]' : 'z-0'} />
-      {isLandingPage ? children : <div className="relative z-10">{children}</div>}
-    </div>
-  );
+  return <div key={pathname} className="route-enter">{children}</div>;
 }
 
 // Protected route wrapper for customer accounts
@@ -77,7 +69,7 @@ function RequireAdminAuth({
   if (!user) {
     return <Navigate to="/admin/login" replace />;
   }
-  if (user.role !== 'studio') {
+  if (user.role !== 'admin' && user.role !== 'studio') {
     return <ForbiddenPage user={user} />;
   }
   return children;
@@ -105,21 +97,21 @@ export default function App() {
 
   if (!authInitialized) {
     return (
-      <div className="min-h-screen bg-[#28201C] flex items-center justify-center font-mono text-xs text-zinc-500">
+      <div className="min-h-screen bg-[#06111D] flex items-center justify-center font-mono text-xs text-zinc-500">
         <div className="flex items-center gap-3">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#273469] animate-ping" />
-          <span className="tracking-widest uppercase">Preparing ARTOPIA...</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-[#347AF2] animate-ping" />
+          <span className="tracking-widest uppercase">Initializing OBSURA...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <CartProvider>
     <BrowserRouter>
       <ScrollToTop />
-      <div key={refreshKey} className="relative isolate min-h-screen bg-[#28201C] text-[#FFF5E6] flex flex-col font-sans">
+      <div key={refreshKey} className="relative isolate min-h-screen bg-[#06111D] text-[#F6F3E9] flex flex-col font-sans">
         <StudioAtmosphere />
+        <FloatingStudioArt />
         <ClickSpark />
         <div className="relative z-10 flex-1">
         <RouteTransition>
@@ -140,8 +132,6 @@ export default function App() {
             path="/admin/login"
             element={<AdminLoginPage user={user} onLoginSuccess={setUser} />}
           />
-
-          <Route path="/cart" element={<CartPage user={user} />} />
 
           {/* Gallery & Art Exploration */}
           <Route path="/gallery" element={<GalleryPage user={user} />} />
@@ -229,6 +219,5 @@ export default function App() {
         </div>
       </div>
     </BrowserRouter>
-    </CartProvider>
   );
 }

@@ -61,28 +61,28 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans-ui relative overflow-hidden">
+    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans-ui relative overflow-hidden">
       {/* Background Aurora Blobs */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-10 right-10 w-96 h-96 rounded-full bg-[#087E8B]/60 blur-[130px] animate-aurora-1" />
-        <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-[#273469]/80 blur-[120px] animate-aurora-2" />
+        <div className="absolute top-10 right-10 w-96 h-96 rounded-full bg-[#103B46]/60 blur-[130px] animate-aurora-1" />
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-[#0B2633]/80 blur-[120px] animate-aurora-2" />
       </div>
 
       <BrandBar user={user} />
 
       <main className="flex-1 flex items-center justify-center p-5 sm:p-8 relative z-10">
-        <div className="w-full max-w-md bg-[#273469]/75 backdrop-blur-2xl border border-white/10 rounded-[24px] p-7 sm:p-9 shadow-2xl space-y-6 relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#087E8B] via-[#F4A900] to-[#477A45]" />
+        <div className="w-full max-w-md bg-[#0B2633]/75 backdrop-blur-2xl border border-white/10 rounded-[24px] p-7 sm:p-9 shadow-2xl space-y-6 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#579AFF] via-[#42E4D0] to-[#68C6B7]" />
 
           <div className="space-y-2">
-            <span className="text-[11px] font-mono-hud text-[#F4A900] uppercase tracking-widest flex items-center gap-1.5">
+            <span className="text-[11px] font-mono-hud text-[#42E4D0] uppercase tracking-widest flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               New Collector Membership
             </span>
-            <h2 className="text-3xl font-display font-light text-[#FFF5E6] tracking-wide">
+            <h2 className="text-3xl font-display font-light text-[#F6F3E9] tracking-wide">
               Join the Atelier
             </h2>
-            <p className="text-xs text-[#E3D0BE] leading-relaxed">
+            <p className="text-xs text-[#B7D6D3] leading-relaxed">
               Create an account to preserve provenance of your acquired paintings and bespoke commissions.
             </p>
           </div>
@@ -96,18 +96,18 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-[#E3D0BE] mb-1.5">
+              <label className="block text-xs font-medium text-[#B7D6D3] mb-1.5">
                 Full Name
               </label>
               <div className="relative">
-                <UserIcon className="w-4 h-4 text-[#E3D0BE] absolute left-3.5 top-3.5" />
+                <UserIcon className="w-4 h-4 text-[#B7D6D3] absolute left-3.5 top-3.5" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ananya Sharma"
-                  className="w-full bg-[#28201C]/60 border border-white/15 focus:border-[#F4A900] rounded-xl py-2.5 pl-10 pr-4 text-sm text-[#FFF5E6] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#F4A900]"
+                  className="w-full bg-[#06111D]/60 border border-white/15 focus:border-[#42E4D0] rounded-xl py-2.5 pl-10 pr-4 text-sm text-[#F6F3E9] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#42E4D0]"
                 />
               </div>
               {fieldErrors.name && (
@@ -116,18 +116,18 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#E3D0BE] mb-1.5">
+              <label className="block text-xs font-medium text-[#B7D6D3] mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-[#E3D0BE] absolute left-3.5 top-3.5" />
+                <Mail className="w-4 h-4 text-[#B7D6D3] absolute left-3.5 top-3.5" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="ananya@example.com"
-                  className="w-full bg-[#28201C]/60 border border-white/15 focus:border-[#F4A900] rounded-xl py-2.5 pl-10 pr-4 text-sm text-[#FFF5E6] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#F4A900]"
+                  className="w-full bg-[#06111D]/60 border border-white/15 focus:border-[#42E4D0] rounded-xl py-2.5 pl-10 pr-4 text-sm text-[#F6F3E9] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#42E4D0]"
                 />
               </div>
               {fieldErrors.email && (
@@ -136,20 +136,20 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#E3D0BE] mb-1.5">
+              <label className="block text-xs font-medium text-[#B7D6D3] mb-1.5">
                 Password
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-[#E3D0BE] absolute left-3.5 top-3.5" />
+                <Lock className="w-4 h-4 text-[#B7D6D3] absolute left-3.5 top-3.5" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 6 characters"
-                  className="w-full bg-[#28201C]/60 border border-white/15 focus:border-[#F4A900] rounded-xl py-2.5 pl-10 pr-12 text-sm text-[#FFF5E6] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#F4A900]"
+                  className="w-full bg-[#06111D]/60 border border-white/15 focus:border-[#42E4D0] rounded-xl py-2.5 pl-10 pr-12 text-sm text-[#F6F3E9] placeholder-zinc-600 outline-none transition-all focus:ring-1 focus:ring-[#42E4D0]"
                 />
-                <button type="button" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} title={showPassword ? 'Hide password' : 'Show password'} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-[#E3D0BE] transition-colors hover:text-[#F4A900] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F4A900]">
+                <button type="button" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} title={showPassword ? 'Hide password' : 'Show password'} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-[#B7D6D3] transition-colors hover:text-[#42E4D0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#42E4D0]">
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
@@ -169,14 +169,14 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
                             ? strength <= 2
                               ? 'bg-[#FF5C5C]'
                               : strength <= 3
-                              ? 'bg-[#087E8B]'
-                              : 'bg-[#FFD65A]'
+                              ? 'bg-[#579AFF]'
+                              : 'bg-[#F3C96B]'
                             : 'bg-white/10'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-[10px] text-[#E3D0BE]">
+                  <span className="text-[10px] text-[#B7D6D3]">
                     Strength:{' '}
                     {strength <= 2 ? 'Weak' : strength <= 3 ? 'Medium' : 'Strong & Secure'}
                   </span>
@@ -187,7 +187,7 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 py-3 rounded-full bg-[#F4A900] hover:bg-[#D81B60] text-[#28201C] font-semibold text-xs tracking-wider uppercase transition-all shadow-lg shadow-[#F4A900]/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full mt-2 py-3 rounded-full bg-[#42E4D0] hover:bg-[#31C8C3] text-[#06111D] font-semibold text-xs tracking-wider uppercase transition-all shadow-lg shadow-[#42E4D0]/20 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <span>Registering Account...</span>
@@ -200,9 +200,9 @@ export const CustomerSignupPage: React.FC<SignupPageProps> = ({ user, onLoginSuc
             </button>
           </form>
 
-          <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#E3D0BE]">
+          <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#B7D6D3]">
             <span>Already have an account?</span>
-            <Link to="/login" className="text-[#F4A900] hover:underline font-medium">
+            <Link to="/login" className="text-[#42E4D0] hover:underline font-medium">
               Sign in
             </Link>
           </div>

@@ -18,11 +18,6 @@ enum PaintingStatus {
   sold
 }
 
-enum PaintingSaleMode {
-  fixed
-  auction
-}
-
 enum OrderStatus {
   placed
   cancelled
@@ -59,7 +54,6 @@ model User {
   updatedAt       DateTime         @updatedAt
   sessions        Session[]
   orders          Order[]
-  bids            Bid[]
   bookings        WallBooking[]
   potteryRequests PotteryRequest[]
   activities      Activity[]
@@ -87,28 +81,12 @@ model Painting {
   price       Int
   imageUrl    String
   status      PaintingStatus @default(available)
-  saleMode    PaintingSaleMode @default(fixed)
-  auctionEndsAt DateTime?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
   orders      Order[]
-  bids        Bid[]
 
   @@index([status, createdAt])
   @@index([price])
-}
-
-model Bid {
-  id         String   @id @default(cuid())
-  paintingId String
-  painting   Painting @relation(fields: [paintingId], references: [id], onDelete: Restrict)
-  customerId String
-  customer   User     @relation(fields: [customerId], references: [id], onDelete: Restrict)
-  amount     Int
-  createdAt  DateTime @default(now())
-
-  @@index([paintingId, amount])
-  @@index([customerId, createdAt])
 }
 
 model PotteryItem {

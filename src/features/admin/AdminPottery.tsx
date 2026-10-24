@@ -90,7 +90,7 @@ export const AdminPottery: React.FC<AdminPotteryProps> = ({ user }) => {
         )}
 
         {/* Filter Bar */}
-        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#273469] border border-white/10 font-mono text-xs overflow-x-auto">
+        <div className="flex items-center gap-1.5 p-3 rounded-xl bg-[#0B2633] border border-white/10 font-mono text-xs overflow-x-auto">
           <span className="text-zinc-500 mr-2">Filter Status:</span>
           {['all', 'requested', 'accepted', 'declined', 'cancelled'].map((s) => (
             <button
@@ -108,7 +108,7 @@ export const AdminPottery: React.FC<AdminPotteryProps> = ({ user }) => {
         </div>
 
         {/* Dense Table */}
-        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#273469] shadow-xl">
+        <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#0B2633] shadow-xl">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
@@ -130,13 +130,13 @@ export const AdminPottery: React.FC<AdminPotteryProps> = ({ user }) => {
                       <td className="py-3 px-4">
                         <div className="font-bold text-white">{r.itemName}</div>
                         <div className="text-[10px] text-zinc-500">#{r.id}</div>
-                        {r.notes && <div className="mt-2 max-w-xs whitespace-pre-wrap break-words text-[11px] font-normal text-[#E3D0BE]">Custom details: {r.notes}</div>}
+                        {r.notes && <div className="mt-2 max-w-xs whitespace-pre-wrap break-words text-[11px] font-normal text-[#B7D6D3]">Custom details: {r.notes}</div>}
                       </td>
                       <td className="py-3 px-4">
                         <div className="font-sans text-white">{r.customerName}</div>
                         <div className="text-[10px] text-zinc-500">{r.customerEmail}</div>
                       </td>
-                      <td className="py-3 px-4 text-[#273469] font-semibold">{r.glazeName}</td>
+                      <td className="py-3 px-4 text-[#347AF2] font-semibold">{r.glazeName}</td>
                       <td className="py-3 px-4 font-bold text-white">{r.quantity} pcs</td>
                       <td className="py-3 px-4 text-zinc-300">{r.neededByDate}</td>
                       <td className="py-3 px-4">
@@ -189,7 +189,7 @@ export const AdminPottery: React.FC<AdminPotteryProps> = ({ user }) => {
         {/* Confirmation Modal */}
         {actionTarget && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in font-mono">
-            <div className="w-full max-w-sm bg-[#273469] border border-white/15 rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="w-full max-w-sm bg-[#0B2633] border border-white/15 rounded-2xl p-6 shadow-2xl space-y-4">
               <h3 className="text-base font-bold text-white capitalize">
                 {actionTarget.action} Pottery Commission
               </h3>

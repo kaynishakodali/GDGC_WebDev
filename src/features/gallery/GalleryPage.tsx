@@ -73,7 +73,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#FFF5E6] flex flex-col font-sans-ui relative">
+    <div className="min-h-screen bg-transparent text-[#F6F3E9] flex flex-col font-sans-ui relative">
       {/* 3D Mode renders in full-screen with overlay BrandBar */}
       {mode === '3d' ? (
         <>
@@ -93,24 +93,24 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ user }) => {
           <BrandBar user={user} overlay={false} />
 
           {/* Mode Switch Header inside Browse mode */}
-          <div className="bg-[#273469]/60 backdrop-blur-md border-b border-white/10 px-5 sm:px-8 py-3 flex items-center justify-between sticky top-[72px] z-30">
+          <div className="bg-[#0B2633]/60 backdrop-blur-md border-b border-white/10 px-5 sm:px-8 py-3 flex items-center justify-between sticky top-[72px] z-30">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FFD65A]" />
-              <span className="text-xs font-mono-hud text-[#E3D0BE]">
+              <span className="w-2 h-2 rounded-full bg-[#F3C96B]" />
+              <span className="text-xs font-mono-hud text-[#B7D6D3]">
                 {paintings.length} Original Artworks
               </span>
             </div>
 
-            <div className="flex items-center p-1 rounded-full bg-[#273469] border border-white/10">
+            <div className="flex items-center p-1 rounded-full bg-[#0B2633] border border-white/10">
               <button
                 onClick={() => setMode('3d')}
-                className="px-4 py-1.5 rounded-full text-xs font-medium text-[#E3D0BE] hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-4 py-1.5 rounded-full text-xs font-medium text-[#B7D6D3] hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
               >
-                <Compass className="w-3.5 h-3.5 text-[#F4A900]" />
-                <span>3D Gallery</span>
+                <Compass className="w-3.5 h-3.5 text-[#42E4D0]" />
+                <span>3D Galaxy</span>
               </button>
               <button
-                className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#F4A900] text-[#28201C] shadow-sm flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded-full text-xs font-semibold bg-[#42E4D0] text-[#06111D] shadow-sm flex items-center gap-1.5"
               >
                 <Grid className="w-3.5 h-3.5" />
                 <span>Browse Grid</span>
@@ -161,7 +161,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ user }) => {
             onSelectPottery={setSelectedPottery}
             user={user}
             onPaintingBought={fetchData}
-            onPaintingBid={fetchData}
           />
         </>
       )}

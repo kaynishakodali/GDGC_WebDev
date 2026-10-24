@@ -68,13 +68,13 @@ export const DevPanel: React.FC<DevPanelProps> = ({ currentUser, onUserChange, o
     if (onRefreshData) onRefreshData();
   };
 
-  const handleSwitchRole = (role: 'customer' | 'studio') => {
+  const handleSwitchRole = (role: 'customer' | 'admin') => {
     mockStore.switchRole(role);
-    onUserChange(role === 'studio' ? {
+    onUserChange(role === 'admin' ? {
       id: 'usr-admin-studio',
       name: 'Studio Admin',
       email: 'studio@artstudio.in',
-      role: 'studio'
+      role: 'admin'
     } : {
       id: 'usr-customer-demo',
       name: 'Ananya Sharma',
@@ -122,7 +122,7 @@ export const DevPanel: React.FC<DevPanelProps> = ({ currentUser, onUserChange, o
 
       {/* Drawer Modal */}
       {isOpen && (
-        <div className="fixed bottom-14 left-4 z-50 w-80 bg-[#273469] border border-white/15 rounded-2xl p-5 shadow-2xl font-mono text-xs space-y-4 animate-fade-in">
+        <div className="fixed bottom-14 left-4 z-50 w-80 bg-[#0B2633] border border-white/15 rounded-2xl p-5 shadow-2xl font-mono text-xs space-y-4 animate-fade-in">
           <div className="flex items-center justify-between pb-2 border-b border-white/10">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
@@ -223,16 +223,16 @@ export const DevPanel: React.FC<DevPanelProps> = ({ currentUser, onUserChange, o
                 onClick={() => handleSwitchRole('customer')}
                 className={`py-1 px-2 rounded text-[10px] border transition-all ${
                   currentUser?.role === 'customer'
-                    ? 'bg-[#273469]/20 border-[#273469] text-white font-bold'
+                    ? 'bg-[#347AF2]/20 border-[#347AF2] text-white font-bold'
                     : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white'
                 }`}
               >
                 Customer
               </button>
               <button
-                onClick={() => handleSwitchRole('studio')}
+                onClick={() => handleSwitchRole('admin')}
                 className={`py-1 px-2 rounded text-[10px] border transition-all ${
-                  currentUser?.role === 'studio'
+                  currentUser?.role === 'admin'
                     ? 'bg-amber-500/20 border-amber-500 text-white font-bold'
                     : 'bg-white/5 border-white/10 text-zinc-400 hover:text-white'
                 }`}
