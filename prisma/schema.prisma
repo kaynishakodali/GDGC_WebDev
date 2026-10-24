@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  customer
+  studio
+  admin
+}
+
+enum PaintingStatus {
+  available
+  sold
+}
+
+enum OrderStatus {
+  placed
+  cancelled
+}
+
+enum BookingStatus {
+  requested
+  confirmed
+  declined
+  cancelled
+}
+
+enum PotteryRequestStatus {
+  requested
+  accepted
+  declined
+  cancelled
+}
+
+enum ActivityType {
+  order
+  booking
+  pottery
+  painting
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String
+  email           String           @unique
+  passwordHash    String
+  role            Role             @default(customer)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  sessions        Session[]
+  orders          Order[]
+  bookings        WallBooking[]
+  potteryRequests PotteryRequest[]
+  activities      Activity[]
+
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+}
+
+model Painting {
+  id          String         @id
+  title       String
+  artist      String
+  description String
+  price       Int
+  imageUrl    String
+  status      PaintingStatus @default(available)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  orders      Order[]
+
+  @@index([status, createdAt])
+  @@index([price])
+}
+
+model PotteryItem {
+  id        String           @id
+  name      String
+  active    Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  requests  PotteryRequest[]
+}
+
+model Glaze {
+  id        String           @id
+  name      String
+  active    Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  requests  PotteryRequest[]
+}
+
+model AppConfig {
+  id        String   @id @default("default")
+  currency  String   @default("INR")
+  muralRate Int      @default(150)
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  customerId    String
+  customer      User        @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  paintingId    String
+  painting      Painting    @relation(fields: [paintingId], references: [id], onDelete: Restrict)
+  customerName  String
+  customerEmail String
+  pricePaid     Int
+  currency      String      @default("INR")
+  shipping      Json
+  status        OrderStatus @default(placed)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([status, createdAt])
+  @@index([paintingId, status])
+}
+
+model WallBooking {
+  id            String        @id @default(cuid())
+  customerId    String
+  customer      User          @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  customerName  String
+  customerEmail String
+  date          String
+  sizeSqFt      Int
+  address       String
+  ratePerSqFt   Int
+  totalPrice    Int
+  currency      String        @default("INR")
+  status        BookingStatus @default(requested)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([date, status])
+  @@index([status, createdAt])
+}
+
+model PotteryRequest {
+  id            String               @id @default(cuid())
+  customerId    String
+  customer      User                 @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  customerName  String
+  customerEmail String
+  itemId        String
+  item          PotteryItem          @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  itemName      String
+  glazeId       String
+  glaze         Glaze                @relation(fields: [glazeId], references: [id], onDelete: Restrict)
+  glazeName     String
+  quantity      Int
+  neededByDate  String
+  notes         String?
+  status        PotteryRequestStatus @default(requested)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  @@index([customerId, createdAt])
+  @@index([status, createdAt])
+}
+
+model Activity {
+  id          String       @id @default(cuid())
+  type        ActivityType
+  title       String
+  description String
+  actorId     String?
+  actor       User?        @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime     @default(now())
+
+  @@index([createdAt])
+  @@index([type, createdAt])
+}

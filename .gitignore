@@ -1,0 +1,17 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and generated output
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+
+.aistudio/
+.pnpm-store/
+__MACOSX/
+dist-server/

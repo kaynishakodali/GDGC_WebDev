@@ -1,0 +1,5 @@
+Put your Google AI Studio landing page here, exactly as generated:
+- its code (App.tsx / index.html / the component files, whatever AI Studio gave you)
+- the chrome-head image file it uses
+In AI Studio use "Download app" / "Get code" (or copy the files by hand) so nothing is retyped.
+The prompt tells the coding tool to reuse this unchanged and to stop and ask if it is missing.

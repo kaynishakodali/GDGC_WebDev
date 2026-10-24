@@ -1,0 +1,183 @@
+# PROJECT: OBSURA — immersive art studio website (FRONTEND ONLY)
+
+Act as a senior creative developer, art director and UI engineer. Build the actual frontend in the workspace. Do not give me only a plan, mockups or snippets.
+
+## 0. Scope: frontend only
+
+- **Do NOT build a backend, database, server, ORM or auth server.** Another tool will build the backend later.
+- The frontend must still be *real*: every screen calls a typed API service layer. In development that layer is backed by a **mock adapter** built from the seed data; later, setting `VITE_USE_MOCK=false` and `VITE_API_URL` must switch it to the real backend with no UI changes.
+- The mock adapter must enforce the same business rules a server would (section 7) so I can demo every workflow, but the UI must never assume the mock is the source of truth: it handles real HTTP-style failures (401, 403, 404, 409, 422, network error).
+- Write `API_CONTRACT.md` describing every endpoint, request, response and error shape the frontend expects, so the backend can be built to match it.
+
+## 1. Files I have provided (inspect them first, print what you find)
+
+1. `seedData.zip` → `seedData/seed.json` + `seedData/images/p-001.jpg … p-012.jpg`. **This is the only source of content.** No outside images, no invented artworks, prices, artists or biographies. Real structure:
+   - `currency: "INR"` (format as ₹ with Indian grouping, e.g. ₹24,500).
+   - `paintings[12]`: `id, title, artist, description, price, imageUrl, status ("available"|"sold")`. `p-004` and `p-009` are sold. `p-012` has a deliberately very long title and description (layout stress test). Images are **800px wide with different aspect ratios** (about 0.66 to 1.5; `p-003`, `p-004`, `p-011` are tall portraits), so never force a fixed ratio.
+   - `potteryItems[5]`: `id, name` only (Kulhad, Surahi, Matka, Diya set, Gamla). **There are no pottery images or prices.** Do not invent any.
+   - `glazes[6]`: `id, name` only (Kumkum Red, Haldi Yellow, Mehendi Green, Indigo Blue, Sandalwood Beige, Charcoal Black).
+   - `mural.ratePerSqFt: 150`. Never hardcode 150 anywhere except by reading it from the seed/API.
+   - `studioAccount` (email `studio@artstudio.in`, password `Studio@123`, role `"studio"`): the seed calls the admin role "studio". In the UI label it "Admin" (matching the brief), but accept both `admin` and `studio` as the admin role value from the API.
+   Copy the seed into `public/seed/` (or `src/mock/seed/`) and load it from there.
+2. `virtual-art-gallery-main.zip` → a Three.js **first-person 3D museum** (WASD + pointer-lock, multiple rooms, framed paintings on walls with captions, statues on pedestals, day/night toggle, collision bounds). **Read `src/main.ts`, `gallery.ts`, `controls.ts`, `frame.ts`, `loaders.ts` before designing.** Use it as a reference for the *experience* (walkable rooms, framed art, wall captions, pedestals, spotlights, collision). Do not copy its 100 images, its `metadata.json`, or its statue `.obj` models: those are not my data. Fix its limitations: it forces every picture to one aspect ratio, has no accessibility/mobile path, and its UI is inline-styled DOM.
+3. `GDGC-WebDev-Volunteer-Recruitement.pdf` → the assignment rules. Key rules are restated in section 7. The RBAC table I attached is the same as the PDF: customers buy/book/request/cancel their own records; admins browse, add/edit available paintings, confirm/decline bookings and accept/decline pottery requests, view all records, and **cannot** buy, book, request or cancel.
+4. **`existing-landing/`: the landing hero I already generated in Google AI Studio (code + the chrome-head image).** This is final and approved. **Do NOT redo, redesign, re-dither, recolor, re-crop or "improve" it.** Copy the existing component/code and its image asset into the app verbatim (convert to a React component only if needed to mount it, keeping the same rendering logic, parameters, colors, image and behavior: Floyd–Steinberg pattern, 2px grid, ivory dots with violet halo, cursor sweep reveals original colors, click shockwave, the mono HUD chips and hint text). Reference screenshots of how it must look are in `docs/reference-screenshots/landing-dither-*.png`; match them exactly.
+   - If `existing-landing/` contains no code or no image, **stop and tell me what is missing instead of recreating the effect.**
+   - You may only wrap it: fix obvious bugs (memory leaks, resize handling, reduced-motion fallback) without changing how it looks, and layer the brand bar, title, tagline and two buttons around it.
+
+## 2. Brand: OBSURA
+
+- Name: **Obsura**. Tagline: **"There's more than meets the eye."**
+- **Title and tagline use two different fonts**, both distinct from the UI body font:
+  - Title "OBSURA": a high-contrast display serif with wide tracking (e.g. Bodoni Moda or Italiana).
+  - Tagline: a monospace (e.g. Space Mono or JetBrains Mono), echoing the dither/HUD aesthetic.
+  - Body/UI: Inter (or similar clean sans).
+  Self-host via `@fontsource` or load from Google Fonts with `font-display: swap` and fallbacks.
+- **Logo (create it yourself as SVG, no raster):** concept = an abstract **eye whose iris is made of dithered dots** with a thin vertical slit pupil, drawn in ivory with a few violet dots; it reads at 24px and at 200px. Deliver: `<Logo variant="mark|full" />` React component (mark + OBSURA wordmark), a monochrome version, an animated version (iris dots shimmer; pupil subtly follows the cursor on the landing page, static under reduced motion), and a favicon/`site.webmanifest` icon.
+- **The logo and the "OBSURA" title must be visible on every page and state** (landing, login, signup, gallery incl. 3D mode and fullscreen/pointer-lock, detail, booking, pottery, dashboards, admin, 403/404/error pages). Build one persistent `BrandBar` used by every layout; in 3D mode it stays top-left as a small overlay.
+- Theme tokens (taken from my screenshots):
+  - `--bg: #0B0A10` (near-black with a faint blue tint), `--surface: #13121A`, `--surface-2: #1B1A24`
+  - `--ivory: #F1EEE8` (primary text and dither dots), `--muted: #A5A2AA`
+  - `--violet: #8F7CFF` (primary accent, halo dots), `--cyan: #5CE1E6`, `--ember: #FF6A3D` (iridescent accents, sparingly), `--ok: #3DDC97`, `--danger: #FF5C5C`
+  - Fine 1px borders, film grain overlay, generous negative space, mono micro-labels, dot-matrix/halftone motifs everywhere.
+  Use violet as a flat accent and in dot patterns, not as a large purple-blue gradient wash.
+- Voice: all copy plays on the idea of *seeing more than first glance* ("Look closer", "Step inside", "Reveal the detail"). Keep it concise. No fake awards, clients, testimonials, stats, social links or contact details.
+- Signature interaction idea used consistently: **images start as a dithered monochrome and reveal their true colors** on hover/proximity. This must never hide required information (price, status, buttons) and is off on touch and under reduced motion (color always shown).
+
+## 3. Landing page (`/`) — contains ONLY this
+
+Full-viewport. Nothing else (no nav, no sections, no footer):
+1. BrandBar (logo + OBSURA).
+2. Large "OBSURA" title and the tagline in their two different fonts.
+3. The interactive dither canvas as the hero visual (see below).
+4. Two prominent buttons: **"Login as Customer"** and **"Login as Admin"**.
+5. A tiny hint line in the mono font: "Sweep to reveal • Click for shockwave" (hidden on touch, replaced with "Tap to pulse").
+
+**Hero visual: use the existing AI Studio landing hero unchanged** (see section 1, item 4). Do not reimplement or restyle it. Only add around it:
+- Make sure it fills the viewport behind/around the title area without cropping or distorting the head, and keep its HUD chips and hint line as generated.
+- Safe wrappers only: lazy mount, pause `requestAnimationFrame` when the tab is hidden, handle resize, clean up listeners on unmount, cap devicePixelRatio at 2, and under `prefers-reduced-motion` freeze idle shimmer while keeping the hover reveal. Add an `aria-label`/alt text for the canvas; the buttons stay real, keyboard-focusable elements above it. If the canvas fails, show the plain image.
+- The title, tagline and buttons must be positioned so they never cover the head.
+
+**Button hover/focus effects (must match the theme; keyboard focus gets the same effect):**
+- Customer button: a **dot-matrix fill that sweeps in** from the cursor position (CSS mask of a dot pattern + radial reveal), an iridescent conic-gradient border that follows the pointer angle, a slight magnetic pull toward the cursor, and a text scramble on the label.
+- Admin button: quieter but distinct: ivory outline that inverts to ivory fill via a scan-line wipe, ember accent underline, small "lock" glyph drawn in SVG that clicks shut.
+- Both: pressed state, visible `:focus-visible` ring, disabled-safe, work on touch, no layout shift, replaced by simple color/opacity transitions under reduced motion.
+- Navigation: Customer → `/login`, Admin → `/admin/login`, through a dither-dissolve page transition (under 600ms, skippable).
+
+## 4. Customer experience (very visually attractive and immersive)
+
+Routes: `/login`, `/signup`, `/gallery`, `/gallery/:id`, `/wall`, `/pottery`, `/pottery/:requestId/edit`, `/account` (tabs: orders, bookings, pottery requests). All customer pages except landing/login/signup/gallery browsing are protected.
+
+### 4.1 Auth pages
+- `/login` and `/signup` (customer only; sign-up has name, email, password with strength hint and inline validation). `/admin/login` has **no sign-up link**.
+- The frontend never decides roles. After login, call `GET /api/auth/me` and route by the returned role. If a customer signs in on the admin page (or vice versa), show "This account can't use this area" and send them to the right place. Use **cookie-based sessions** (`credentials: "include"`); never keep tokens in `localStorage`.
+- Session expiry (401 from any call) → login page with a "Your session expired" message and return-to path.
+
+### 4.2 The Gallery (`/gallery`): a walkable 3D exhibition + a Browse view
+A header toggle switches between **Walk** (3D) and **Browse** (2D). Browse is the default on touch devices, when WebGL is unavailable, when `prefers-reduced-motion` is set, and always remains keyboard-accessible. **Purchasing must never depend on WebGL.**
+
+**Walk mode (Three.js via React Three Fiber + drei, lazy-loaded chunk):**
+- Rooms (inspired by the reference): **Atrium** with the OBSURA signage and a "how to move" card; **Painting Hall** with all 12 seed paintings on the walls; **Pottery Atelier** with the 5 pottery items on pedestals; **Wall Art Room** about mural commissions.
+- Paintings: framed with their **true aspect ratio** (read the loaded texture size), hung at consistent eye height, spaced without overlap, spotlit. Each has a placard: title (clamped to 2 lines, ellipsis, so `p-012` doesn't break), artist, price in ₹, and an **Available / Sold** tag. Sold paintings are visibly distinct: dimmer light, a red "SOLD" mark, no buy action. Looking at a painting at close range shows the color reveal; far ones can appear dither-toned.
+- Clicking a painting (or pressing Enter when focused/near) opens an **inspect panel** (HTML overlay): large image, title, artist, description, price, status, "View details" → `/gallery/:id`, and "Buy" if available (with login redirect if signed out).
+- **Pottery on pedestals (no images exist):** generate each item procedurally with `LatheGeometry` profiles: Kulhad = tapered cup, Surahi = narrow-necked jug with belly, Matka = round-bellied pot with wide mouth, Diya set = three shallow lamps with soft emissive flames, Gamla = wide planter. Show the item `name` from the seed on the placard. Add a **glaze selector** (the 6 seed glazes) that recolors the object in real time using a small, clearly commented lookup table from glaze name → color (this is a presentation mapping, not data: Kumkum Red, Haldi Yellow, Mehendi Green, Indigo Blue, Sandalwood Beige, Charcoal Black). The panel's "Request this piece" button goes to `/pottery` with item and glaze preselected. Show no prices for pottery.
+- **Wall Art Room:** a large blank wall with a measurement grid and a person-height silhouette for scale. A wall-size slider (10–500 sq ft) resizes a "painted area" revealed in the dither-to-color style, and shows the live price from the seed rate. No invented mural images or past-work claims. "Plan your wall" → `/wall`.
+- Controls: WASD/arrows to move, mouse look with pointer lock (press Esc to release), click to interact; **Guided Tour** buttons (Next/Previous artwork) that dolly the camera, working on keyboard and touch (this replaces pointer-lock on mobile); a minimap or room list for jumping; collision with walls; a visible "Exit to Browse" button; a mono HUD showing controls.
+- Technical care: dispose textures/geometries on unmount, cap pixel ratio at 1.5, `frameloop="demand"` when idle, pause when the tab is hidden, texture anisotropy modest, loading screen using the brand, an **error boundary and WebGL-support check** that falls back to Browse mode with a message. Use mipmaps; images are only 800px wide so don't upscale beyond that.
+
+**Browse mode:** an asymmetrical editorial grid of all 12 paintings (varied tile proportions from each image's real ratio) plus a "Pottery Atelier" strip of the 5 items (procedural previews using the same lathe objects rendered in small canvases, or SVG silhouettes drawn from the same profiles). Filters: All / Available / Sold; sort by price. Hover reveals dithered-to-color, tilt, and quick info. Loading skeletons, empty (filter has no results) and error-with-retry states.
+
+### 4.3 Painting detail (`/gallery/:id`)
+Large image with a **magnifier/loupe** and subtle tilt; title, artist, description (full text, readable even for `p-012`), price, **status badge**. If available: "Buy this painting" opens a confirmation dialog, then calls `POST /api/orders`. If sold: button disabled with the message "This painting has found its home. It's no longer available." If the server answers **409 (just sold)**: show a clear message, flip the page to the sold state, and refetch the gallery list. Signed-out users get "Log in to buy" with return-to. Admins viewing this page see no purchase action. Next/previous artwork navigation with a clipped image transition.
+
+### 4.4 Book a wall (`/wall`)
+Immersive multi-step form (Date → Wall → Address → Review), each step animated, state kept if the user goes back.
+- **Date:** custom accessible calendar (grid with keyboard arrows, `aria-selected`, `aria-disabled`). Enabled only from today+7 to today+90 (inclusive). Dates the API reports as unavailable are disabled and labeled "Booked". Use date-only strings in **Asia/Kolkata**; avoid timezone drift.
+- **Wall:** size slider + numeric input synchronized, 10–500 sq ft, with the animated wall-silhouette preview. Show **"Rate: ₹{ratePerSqFt}/sq ft × {size} = ₹{total}"** with the total animating. The rate comes from the API/seed; the server's computed total is what's finally displayed after submit.
+- **Address:** textarea with validation (required, sensible minimum length).
+- **Review & submit:** summary, then `POST /api/bookings`. Success state shows the booking with status **requested** and a link to the dashboard. On **409 (date taken)**: refetch unavailable dates, jump back to the Date step, mark that date taken and explain "Someone just booked that date. Please pick another." Field errors (422) appear beside the relevant fields. Never show success before the server confirms; disable the button while submitting.
+
+### 4.5 Custom pottery (`/pottery`)
+- Choose an item from the 5 seed items (cards with the procedural 3D/SVG previews), then one of the 6 glaze swatches (live recolors the preview), quantity stepper 1–12, and needed-by date (calendar, at least 14 days from today). Items and glazes come only from the API/seed, never from hardcoded lists.
+- Submit → `POST /api/pottery-requests`; success shows status **requested**. Validation errors beside fields.
+- Edit page reuses the form; allowed only while status is `requested` (otherwise show a locked state with the reason). Cancel with a confirmation dialog.
+
+### 4.6 Customer dashboard (`/account`)
+Tabs with animated indicator:
+- **Orders:** purchased paintings with thumbnail, title, price paid, order status (`placed`/`cancelled`), date; "Cancel order" only while `placed`, with a confirmation dialog and a note that the painting becomes available again.
+- **Wall bookings:** date, size, address, rate, total, status (`requested`, `confirmed`, `declined`, `cancelled`). "Cancel" enabled only while the status is `requested` or `confirmed` **and** today is at least 3 days before the booking date; otherwise disabled with the exact reason ("Cancellation closed 3 days before your date").
+- **Pottery requests:** item, glaze, quantity, needed-by date, status (`requested`, `accepted`, `declined`, `cancelled`); Edit/Cancel only while `requested`.
+- Each tab has designed loading skeletons, empty states ("Nothing here yet. Step inside the gallery.") and error states with retry. Status labels use color **and** text/icon, and match backend values exactly.
+
+## 5. Admin experience (cleaner and more utilitarian, same Obsura brand)
+
+Routes (all protected, admin only): `/admin/login`, `/admin` (dashboard), `/admin/paintings`, `/admin/bookings`, `/admin/pottery`, `/admin/orders`, `/admin/activity`. Separate `AdminLayout` with sidebar (logo + OBSURA visible), minimal motion (page fade only), dense tables.
+- **Dashboard:** count tiles (available vs sold paintings, orders placed/cancelled, bookings requested/confirmed, pottery requests requested) with quick links to pending actions (e.g. "3 bookings awaiting review"). Counts come from the API data, never invented.
+- **Paintings:** table with thumbnail, title, artist, price, status; search and status filter; "Add painting" form (title, artist, description, price, image reference: a path/URL, because image upload is out of scope); "Edit" **enabled only while available** (disabled with an explanation for sold). When an order is cancelled, the painting returns to available in the list after refetch.
+- **Bookings:** table with customer, date, size, address, rate, total, status; Confirm/Decline only on `requested`; filters by status and date; shows cancelled/declined history. A note explains that a date can only have one active booking; surface server 409s.
+- **Pottery requests:** table with customer, item, glaze, quantity, needed-by date, status; Accept/Decline only on `requested`.
+- **Orders:** read-only list of all orders (painting, customer, status, date). **No cancel button anywhere in admin.**
+- **Activity:** one chronological, filterable list built from the real records (orders, bookings, pottery) with timestamps. No invented events.
+- Admins never see Buy/Book/Request buttons. Confirmation dialogs for status changes; 409s handled with a refetch and message.
+
+## 6. Cross-cutting UI rules
+
+- **Every data screen** has loading skeleton, success, empty, error-with-retry, permission error (403 page), not-found (404 page) and session-expired handling. Conflicts (409) always show a clear human message and refresh stale data. No fake success.
+- Reusable components: `BrandBar`, `Logo`, `DitherImage`, `DitherCanvasHero`, `ArtworkCard`, `PaintingFrame3D`, `PotteryObject3D`, `Calendar`, `StatusBadge`, `Field` (with error), `Dialog`, `Toast`, `Skeleton`, `EmptyState`, `ErrorState`, `ProtectedRoute` (role-aware), `CustomerLayout`, `AdminLayout`, `PageTransition`.
+- Motion (use `motion/react`): intro reveal under ~1.5s (skippable), scroll-linked parallax and clipped image reveals in Browse and detail pages, staggered entrances, `layoutId` shared-element transition from a Browse tile to its detail page, magnetic buttons, text-scramble headings, subtle tilt on cards, dither-dissolve route transitions. A **custom cursor on desktop pointers only** (small dot that becomes a dither lens over artwork), and the normal cursor remains on form fields, buttons and links.
+- Respect `prefers-reduced-motion` everywhere (simple fades, no parallax, no cursor effects, no shimmer, no smooth scroll). Mobile: disable pointer-based 3D and tilt, simplified parallax, touch-sized targets, no horizontal overflow.
+- Accessibility: semantic landmarks, skip link, keyboard-operable everything (including calendar and guided tour), visible focus ring, AA contrast, labeled form fields with `aria-describedby` errors, `aria-live` for results and status changes, alt text built from the real title/artist, proper heading order.
+- Performance: route-level code splitting; the 3D chunk loads only on `/gallery` Walk mode; lazy-load images with explicit width/height; keep the main bundle small; avoid continuous animation off-screen.
+- Copy: everything matches the theme (concise, curious, a little mysterious), but errors and form labels stay plain and unambiguous.
+
+## 7. Business rules the frontend and the mock must reflect
+
+- Paintings are unique: status `available` or `sold`; sold ones cannot be bought or edited. Cancelling an order makes the painting available again.
+- Order statuses: `placed`, `cancelled`. Booking: `requested`, `confirmed`, `declined`, `cancelled`. Pottery: `requested`, `accepted`, `declined`, `cancelled`.
+- Booking date: today+7 to today+90 days inclusive, one active booking per date (declined/cancelled free the date). Wall size 10–500. Price = size × `ratePerSqFt`. Customer can cancel until 3 days before the date. Admin confirms/declines only from `requested`.
+- Pottery: seed item + seed glaze, quantity 1–12, needed-by at least 14 days away. Customer edits or cancels only while `requested`. Admin accepts/declines only from `requested`.
+- RBAC (the server will enforce; the mock simulates): 401 not logged in, 403 wrong role, 404 for another customer's record. 409 for conflicts and illegal state changes. 422 for validation errors with `fields`.
+- Error shape the UI expects: `{ "error": { "code": "PAINTING_SOLD", "message": "...", "fields": { "date": "..." } } }`.
+- The frontend hides forbidden actions for UX, but it assumes the server is the real authority.
+
+## 8. Technical stack and structure
+
+- React + Vite + TypeScript, React Router, `motion/react`, Three.js + `@react-three/fiber` + `@react-three/drei` (lazy), TanStack Query for loading/error/retry/refetch, Zod for client validation mirroring the rules, plain CSS variables or Tailwind (pick one, keep it consistent). Keep dependencies minimal and justify each in a comment.
+- Structure: `src/api/` (typed client, `types.ts`, error handling, one function per endpoint), `src/mock/` (adapter, seed loader, in-memory store, rule enforcement, latency simulation; imported dynamically only when `VITE_USE_MOCK=true`), `src/features/{landing,auth,gallery,wall,pottery,account,admin}`, `src/components/`, `src/styles/`.
+- **Mock dev panel** (dev only): toggle simulated latency, forced error, empty data, "someone else just bought this painting", "someone else just booked this date", and session expiry, so every loading/empty/error/conflict state can be demonstrated on camera.
+- Mock sessions live in memory (plus a non-sensitive flag in `sessionStorage` to survive refresh); it is clearly marked as mock-only. Admin mock login uses the seed `studioAccount`; do not print those credentials on any page (put them in the README dev notes only).
+- `.env.example`: `VITE_USE_MOCK=true`, `VITE_API_URL=http://localhost:4000`. No real secrets.
+- Keep code readable and explainable: small components, plain names, short comments on the tricky parts (dither algorithm, aspect-ratio framing, date-window logic, conflict handling). I must be able to explain it live without AI.
+
+## 9. Build order (checkpoint after each; app must run at each step)
+
+1. Inspect the zips; print seed structure, image sizes and the reference gallery's key logic; report any surprises.
+2. Design tokens, fonts, `Logo`, `BrandBar`, layouts, base components, route skeleton.
+3. API types, service layer, mock adapter with rule enforcement, `API_CONTRACT.md`.
+4. Landing page: mount the existing AI Studio hero unchanged, add BrandBar, title, tagline and the two buttons.
+5. Auth pages and role-aware protected routes.
+6. **Browse gallery, painting detail and Buy flow** (first complete vertical slice).
+7. Customer dashboard (orders, bookings list, pottery list, cancel rules).
+8. Wall booking flow, then pottery request/edit flow.
+9. Admin area.
+10. **3D Walk mode last**, with Browse fallback already working.
+11. Motion polish, accessibility, responsive and performance pass; fix console errors, dead buttons and broken routes.
+12. README (run commands, mock vs real mode, dev panel usage), `FRONTEND_NOTES.md` (file map and explanations per feature for interview prep), final test of every workflow including 401/403/404/409 handling and reload behavior.
+
+If time runs short, ship steps 1–9 polished and tell me honestly what is left of step 10; do not leave a half-working 3D mode as the only way to buy.
+
+## 10. Acceptance checklist (verify and report each)
+
+- [ ] Logo and "OBSURA" visible on every page, including 3D mode
+- [ ] Landing page shows only brand, title, tagline (two different fonts), the **unchanged** AI Studio hero (same image, effect and colors as my screenshots) and the two buttons with special hover/focus effects
+- [ ] All content comes from the seed (12 paintings with real images and aspect ratios, 5 pottery items, 6 glazes, rate from seed); no outside pictures
+- [ ] Browse and Walk modes both list all paintings and pottery; sold vs available is clear; long title (`p-012`) doesn't break any layout
+- [ ] Buy flow with confirmation, sold state, and 409 handling
+- [ ] Wall booking with 7–90 day window, 10–500 size, live rate × size total, address, date-taken handling
+- [ ] Pottery request with seed item/glaze, 1–12 quantity, 14-day rule, edit/cancel only while requested
+- [ ] Dashboard shows orders, bookings, pottery requests with correct status labels and cancel rules
+- [ ] Admin: counts, add/edit available paintings, confirm/decline bookings, accept/decline pottery, read-only orders and activity, no cancel or customer actions
+- [ ] Loading, empty, error, 401/403/404/409 states exist on every data screen
+- [ ] Reduced-motion, keyboard-only and mobile fallbacks work; WebGL failure falls back to Browse
+- [ ] Switching `VITE_USE_MOCK` to false only changes the data source (documented in `API_CONTRACT.md`)
+- [ ] No backend code was written

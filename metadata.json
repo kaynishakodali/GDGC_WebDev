@@ -1,0 +1,6 @@
+{
+  "name": "OBSURA — Immersive Art Studio",
+  "description": "OBSURA: Immersive art studio with interactive dither veil, 3D virtual art museum, custom pottery atelier, and mural commissions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
